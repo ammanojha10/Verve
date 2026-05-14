@@ -3,7 +3,12 @@ import { createClient } from '@supabase/supabase-js'
 import { redirect } from 'next/navigation'
 import { Activity, Route, Timer, Zap } from 'lucide-react'
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string; msg?: string }>
+}) {
+  const { error: urlError, msg } = await searchParams
   const session = await getSession()
 
   if (!session) {
@@ -25,7 +30,15 @@ export default async function DashboardPage() {
     return (
       <div className="px-12 py-24 text-center">
         <h1 className="font-heading text-4xl text-primary mb-4">Profile Not Found</h1>
-        <p className="text-muted mb-8">Please connect Strava to create your profile.</p>
+        <p className="text-muted mb-4">Please connect Strava to create your profile.</p>
+        
+        {urlError && (
+          <div className="mb-8 p-4 bg-primary/10 text-primary text-sm rounded-lg max-w-md mx-auto">
+            <strong>Error:</strong> {urlError}<br/>
+            {msg && <span className="opacity-70">{msg}</span>}
+          </div>
+        )}
+
         <div className="text-[10px] text-muted/30 font-mono p-4 border border-foreground/5 rounded inline-block">
           DEBUG_ID: {session.userId} | STRAVA_ID: {session.stravaId}
         </div>

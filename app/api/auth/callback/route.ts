@@ -114,6 +114,7 @@ export async function GET(request: Request) {
 
   if (profileErr) {
     console.error('Deep Sync Error:', profileErr)
+    return NextResponse.redirect(`${appUrl}/dashboard?error=profile_sync_failed&msg=${encodeURIComponent(profileErr.message)}`)
   }
 
   // Create a signed-in session for the user
