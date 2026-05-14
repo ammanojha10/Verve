@@ -25,7 +25,10 @@ export default async function DashboardPage() {
     return (
       <div className="px-12 py-24 text-center">
         <h1 className="font-heading text-4xl text-primary mb-4">Profile Not Found</h1>
-        <p className="text-muted">Please connect Strava to create your profile.</p>
+        <p className="text-muted mb-8">Please connect Strava to create your profile.</p>
+        <div className="text-[10px] text-muted/30 font-mono p-4 border border-foreground/5 rounded inline-block">
+          DEBUG_ID: {session.userId} | STRAVA_ID: {session.stravaId}
+        </div>
       </div>
     )
   }

@@ -87,7 +87,21 @@ export async function GET(request: Request) {
     userId = authUser.user!.id
   }
 
-  // 2. Upsert Profile
+  // 2. Deep Sync Profile
+  // First, check if ANY profile exists with this strava_id
+  const { data: existingProfile } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('strava_id', athlete.id)
+    .single()
+
+  if (existingProfile && existingProfile.id !== userId) {
+    // CRITICAL CONFLICT: Profile exists but is tied to a different auth user.
+    // We must re-link it to the current auth user.
+    console.log('Relinking profile to new auth user')
+    await supabase.from('profiles').delete().eq('id', existingProfile.id)
+  }
+
   const { error: profileErr } = await supabase.from('profiles').upsert({
     id: userId,
     name,
@@ -96,24 +110,10 @@ export async function GET(request: Request) {
     strava_refresh_token: refresh_token,
     strava_token_expires_at: expires_at,
     avatar_url: avatarUrl,
-    tier: 'Jogger', // Default, but upsert won't overwrite XP if we handle it
-  }, {
-    onConflict: 'strava_id',
-    ignoreDuplicates: false,
   })
 
   if (profileErr) {
-    console.error('Profile Upsert Error:', profileErr)
-    // Fallback attempt by ID if strava_id conflict fails
-    await supabase.from('profiles').upsert({
-      id: userId,
-      name,
-      strava_id: athlete.id,
-      strava_access_token: access_token,
-      strava_refresh_token: refresh_token,
-      strava_token_expires_at: expires_at,
-      avatar_url: avatarUrl,
-    })
+    console.error('Deep Sync Error:', profileErr)
   }
 
   // Create a signed-in session for the user
