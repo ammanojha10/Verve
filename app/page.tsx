@@ -7,15 +7,20 @@ import { StatCounter } from '@/components/ui/StatCounter'
 import { RevealSection } from '@/components/ui/RevealSection'
 import { HeroParallax } from '@/components/ui/HeroParallax'
 import TextCursorProximity from '@/components/ui/text-cursor-proximity'
-import { useRef } from 'react'
+import { useRef, Suspense } from 'react'
 import { useTheme } from 'next-themes'
+import { AuthErrorBanner } from '@/components/auth/AuthErrorBanner'
+import { WhatsAppSection } from '@/components/social/WhatsAppSection'
+import { InstagramPreview } from '@/components/social/InstagramPreview'
 
 export default function LandingPage() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === "dark"
   return (
-    <div className="flex-1 -mt-[86px]">
+    <Suspense fallback={<div className="flex-1" />}>
+      <AuthErrorBanner />
+      <div className="flex-1 -mt-[86px]">
 
       {/* ── HERO ── */}
       <section ref={containerRef} className="min-h-screen grid grid-cols-1 md:grid-cols-2 relative overflow-hidden">
@@ -213,22 +218,11 @@ export default function LandingPage() {
         ))}
       </section>
 
-      {/* ── JOIN ── */}
-      <section className="grid grid-cols-1 md:grid-cols-2 min-h-[auto] md:min-h-[420px]" id="join">
-        <div className="bg-gradient-to-br from-primary to-primary-deep p-10 md:p-20 flex flex-col justify-center">
-          <h2 className="font-heading text-[52px] md:text-[64px] text-white leading-[0.95] tracking-tight mb-6">Ready<br />to run?</h2>
-          <p className="text-sm font-light text-white/65 leading-relaxed max-w-[300px]">
-            Connect your Strava and start earning XP from your very next run. Free to join.
-          </p>
-        </div>
-        <div className="bg-off p-10 md:p-20 flex flex-col justify-center gap-4">
-          <input className="bg-background border border-foreground/[0.12] px-[18px] py-3.5 text-sm text-foreground outline-none focus:border-primary transition-colors duration-200 placeholder:text-muted" type="text" placeholder="Your name" />
-          <input className="bg-background border border-foreground/[0.12] px-[18px] py-3.5 text-sm text-foreground outline-none focus:border-primary transition-colors duration-200 placeholder:text-muted" type="email" placeholder="Email address" />
-          <Button className="mt-2" asChild>
-            <a href="/api/auth/strava">Connect with Strava →</a>
-          </Button>
-        </div>
-      </section>
+      {/* ── WHATSAPP ── */}
+      <WhatsAppSection />
+
+      {/* ── INSTAGRAM ── */}
+      <InstagramPreview />
 
       {/* ── FOOTER ── */}
       <footer className="px-6 md:px-12 py-10 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-foreground/[0.08]">
@@ -240,6 +234,7 @@ export default function LandingPage() {
         </div>
         <div className="text-xs text-muted tracking-wide text-center md:text-right">© 2026 Verve Run Club · KIIT, Odisha · BBSR</div>
       </footer>
-    </div>
+      </div>
+    </Suspense>
   )
 }

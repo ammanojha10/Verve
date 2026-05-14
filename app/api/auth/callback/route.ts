@@ -91,11 +91,24 @@ export async function GET(request: Request) {
     })
 
     if (authErr || !authUser.user) {
-      console.error('Failed to create auth user:', authErr)
-      return NextResponse.redirect(`${appUrl}/?error=user_creation_failed`)
+      // Check if user already exists
+      if (authErr?.message?.includes('already registered') || authErr?.status === 422) {
+        const { data: searchData, error: searchErr } = await supabase.auth.admin.listUsers()
+        const existingAuthUser = searchData?.users.find(u => u.email === `strava-${athlete.id}@verve.run`)
+        
+        if (existingAuthUser) {
+          userId = existingAuthUser.id
+        } else {
+          console.error('Failed to create or find auth user:', authErr)
+          return NextResponse.redirect(`${appUrl}/?error=user_creation_failed`)
+        }
+      } else {
+        console.error('Failed to create auth user:', authErr)
+        return NextResponse.redirect(`${appUrl}/?error=user_creation_failed`)
+      }
+    } else {
+      userId = authUser.user.id
     }
-
-    userId = authUser.user.id
 
     await supabase.from('profiles').insert({
       id: userId,
