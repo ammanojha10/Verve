@@ -4,10 +4,10 @@ import { cookies } from 'next/headers'
 import { getTier } from '@/lib/xp'
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url)
-  const code = searchParams.get('code')
-  const error = searchParams.get('error')
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL!
+  const url = new URL(request.url)
+  const code = url.searchParams.get('code')
+  const error = url.searchParams.get('error')
+  const appUrl = url.origin
 
   if (error || !code) {
     return NextResponse.redirect(`${appUrl}/?error=strava_denied`)

@@ -12,9 +12,9 @@ export default function LandingPage() {
       {/* ── HERO ── */}
       <section className="min-h-screen grid grid-cols-1 md:grid-cols-2 relative overflow-hidden">
         {/* Left */}
-        <div className="flex flex-col justify-center px-12 py-32 relative z-10">
+        <div className="flex flex-col justify-center px-6 md:px-12 py-20 md:py-32 relative z-10">
           <div className="text-[11px] tracking-[3px] uppercase text-primary mb-6 opacity-0 animate-fade-up" style={{ animationDelay: '0.2s' }}>
-            KIIT Run Club · Est. 2026
+            KIIT Run Club · Est. 2026 · BBSR
           </div>
           <h1 className="font-heading text-[clamp(72px,8vw,130px)] leading-[0.92] tracking-tight text-foreground opacity-0 animate-fade-up" style={{ animationDelay: '0.4s' }}>
             Run.<br />
@@ -24,6 +24,11 @@ export default function LandingPage() {
           <p className="text-[15px] font-light leading-relaxed text-foreground/55 max-w-[360px] mt-7 opacity-0 animate-fade-up" style={{ animationDelay: '0.6s' }}>
             Track every km with Strava, earn XP, climb the leaderboard, and chase badges with your crew.
           </p>
+          <div className="mt-6 text-sm text-foreground/70 border-l-2 border-primary pl-4 opacity-0 animate-fade-up" style={{ animationDelay: '0.7s' }}>
+            <p className="font-medium">🏃 Free Running Community 100+ Active Runners</p>
+            <p>Open to All</p>
+            <p className="italic mt-1">Verve for all. All for Verve.</p>
+          </div>
           <div className="flex gap-4 mt-11 opacity-0 animate-fade-up" style={{ animationDelay: '0.8s' }}>
             <Button asChild>
               <a href="/api/auth/strava">Connect Strava</a>
@@ -67,15 +72,16 @@ export default function LandingPage() {
       <Marquee />
 
       {/* ── LEADERBOARD ── */}
-      <section className="py-24 px-12" id="leaderboard">
+      <section className="py-16 md:py-24 px-6 md:px-12" id="leaderboard">
         <RevealSection>
           <div className="text-[11px] tracking-[3px] uppercase text-primary mb-4">Monthly standings</div>
         </RevealSection>
         <RevealSection delay={80}>
-          <h2 className="font-heading text-[clamp(42px,5vw,72px)] leading-none tracking-tight text-foreground mb-13">Leaderboard</h2>
+          <h2 className="font-heading text-[clamp(42px,5vw,72px)] leading-none tracking-tight text-foreground mb-8 md:mb-13">Leaderboard</h2>
         </RevealSection>
         <RevealSection delay={160}>
-          <div className="max-w-[780px]">
+          <div className="w-full overflow-x-auto pb-4">
+            <div className="min-w-[600px] max-w-[780px]">
             {/* Header */}
             <div className="grid grid-cols-[48px_1fr_120px_120px_100px] pb-3 border-b border-foreground/[0.08] text-[10px] tracking-[2px] uppercase text-muted mb-1">
               <span>#</span><span>Runner</span><span>KM</span><span>Best pace</span><span>Badge</span>
@@ -105,12 +111,13 @@ export default function LandingPage() {
                 <span className="text-[10px] tracking-[1.5px] uppercase px-2.5 py-1 border border-primary-pale text-primary bg-primary-pale inline-block relative z-10">{r.badge}</span>
               </div>
             ))}
+            </div>
           </div>
         </RevealSection>
       </section>
 
       {/* ── FEATURES ── */}
-      <section className="py-20 px-12 bg-off" id="features">
+      <section className="py-16 md:py-20 px-6 md:px-12 bg-off" id="features">
         <RevealSection>
           <div className="text-[11px] tracking-[3px] uppercase text-primary mb-4">What you get</div>
         </RevealSection>
@@ -138,7 +145,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── CHALLENGES ── */}
-      <section className="bg-foreground py-20 px-12" id="challenges">
+      <section className="bg-foreground py-16 md:py-20 px-6 md:px-12" id="challenges">
         <RevealSection>
           <div className="text-[11px] tracking-[3px] uppercase text-primary-light mb-4">Active now</div>
         </RevealSection>
@@ -167,14 +174,14 @@ export default function LandingPage() {
       </section>
 
       {/* ── JOIN ── */}
-      <section className="grid grid-cols-1 md:grid-cols-2 min-h-[420px]" id="join">
-        <div className="bg-gradient-to-br from-primary to-primary-deep p-20 flex flex-col justify-center">
-          <h2 className="font-heading text-[64px] text-white leading-[0.95] tracking-tight mb-6">Ready<br />to run?</h2>
+      <section className="grid grid-cols-1 md:grid-cols-2 min-h-[auto] md:min-h-[420px]" id="join">
+        <div className="bg-gradient-to-br from-primary to-primary-deep p-10 md:p-20 flex flex-col justify-center">
+          <h2 className="font-heading text-[52px] md:text-[64px] text-white leading-[0.95] tracking-tight mb-6">Ready<br />to run?</h2>
           <p className="text-sm font-light text-white/65 leading-relaxed max-w-[300px]">
             Connect your Strava and start earning XP from your very next run. Free to join.
           </p>
         </div>
-        <div className="bg-off p-20 flex flex-col justify-center gap-4">
+        <div className="bg-off p-10 md:p-20 flex flex-col justify-center gap-4">
           <input className="bg-background border border-foreground/[0.12] px-[18px] py-3.5 text-sm text-foreground outline-none focus:border-primary transition-colors duration-200 placeholder:text-muted" type="text" placeholder="Your name" />
           <input className="bg-background border border-foreground/[0.12] px-[18px] py-3.5 text-sm text-foreground outline-none focus:border-primary transition-colors duration-200 placeholder:text-muted" type="email" placeholder="Email address" />
           <Button className="mt-2" asChild>
@@ -184,9 +191,14 @@ export default function LandingPage() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="px-12 py-10 flex items-center justify-between border-t border-foreground/[0.08]">
-        <div className="font-heading text-[22px] tracking-[4px] text-primary">VERVE</div>
-        <div className="text-xs text-muted tracking-wide">© 2026 Verve Run Club · KIIT, Odisha</div>
+      <footer className="px-6 md:px-12 py-10 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-foreground/[0.08]">
+        <div className="flex items-center gap-6">
+          <img src="/logo.png" alt="Verve Run Club" className="h-8 w-auto invert dark:invert-0" />
+          <a href="https://www.instagram.com/verve.runclub/" target="_blank" rel="noopener noreferrer" className="text-sm text-muted hover:text-primary transition-colors">
+            Instagram
+          </a>
+        </div>
+        <div className="text-xs text-muted tracking-wide text-center md:text-right">© 2026 Verve Run Club · KIIT, Odisha · BBSR</div>
       </footer>
     </div>
   )
