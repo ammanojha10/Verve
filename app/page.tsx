@@ -1,240 +1,155 @@
-"use client"
+'use client'
 
-import Link from 'next/link'
-import { Button } from '@/components/ui/Button'
-import { Marquee } from '@/components/ui/Marquee'
-import { StatCounter } from '@/components/ui/StatCounter'
-import { RevealSection } from '@/components/ui/RevealSection'
-import { HeroParallax } from '@/components/ui/HeroParallax'
-import TextCursorProximity from '@/components/ui/text-cursor-proximity'
 import { useRef, Suspense } from 'react'
-import { useTheme } from 'next-themes'
-import { AuthErrorBanner } from '@/components/auth/AuthErrorBanner'
+import { LiquidShaderHero } from '@/components/hero/LiquidShaderHero'
+import { TiltCard } from '@/components/ui/TiltCard'
+import { LiquidXPBar } from '@/components/ui/LiquidXPBar'
+import { DitheringShader } from '@/components/ui/dithering-shader'
+import { GlassBadge } from '@/components/ui/GlassBadge'
+import { RevealSection } from '@/components/ui/RevealSection'
 import { WhatsAppSection } from '@/components/social/WhatsAppSection'
 import { InstagramPreview } from '@/components/social/InstagramPreview'
+import { AuthErrorBanner } from '@/components/auth/AuthErrorBanner'
+import { Activity, Zap, Trophy, Users } from 'lucide-react'
 
 export default function LandingPage() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const { resolvedTheme } = useTheme()
-  const isDark = resolvedTheme === "dark"
   return (
-    <Suspense fallback={<div className="flex-1" />}>
-      <AuthErrorBanner />
-      <div className="flex-1 -mt-[86px]">
+    <main className="relative bg-background">
+      <Suspense fallback={null}>
+        <AuthErrorBanner />
+      </Suspense>
 
       {/* ── HERO ── */}
-      <section ref={containerRef} className="min-h-screen grid grid-cols-1 md:grid-cols-2 relative overflow-hidden">
-        {/* Left */}
-        <div className="flex flex-col justify-center px-6 md:px-12 py-20 md:py-32 relative z-10">
-          <div className="text-[11px] tracking-[3px] uppercase text-primary mb-6 opacity-0 animate-fade-up" style={{ animationDelay: '0.2s' }}>
-            KIIT Run Club · Est. 2026 · BBSR
-          </div>
-          <h1 className="font-heading text-[clamp(72px,8vw,130px)] leading-[0.92] tracking-tight text-foreground opacity-0 animate-fade-up" style={{ animationDelay: '0.4s' }}>
-            <div className="flex flex-col">
-              <TextCursorProximity
-                label="Run."
-                className="will-change-transform font-heading"
-                styles={{
-                  transform: { from: "scale(1)", to: "scale(1.4)" },
-                  color: { from: isDark ? "#FFFFFF" : "#000000", to: "#FF0000" }
-                }}
-                falloff="gaussian"
-                radius={120}
-                containerRef={containerRef}
-              />
-              <TextCursorProximity
-                label="Earn."
-                className="will-change-transform font-heading text-primary"
-                styles={{
-                  transform: { from: "scale(1)", to: "scale(1.4)" },
-                  color: { from: "#C0392B", to: "#FF0000" }
-                }}
-                falloff="gaussian"
-                radius={120}
-                containerRef={containerRef}
-              />
-              <TextCursorProximity
-                label="Dominate."
-                className="will-change-transform font-heading"
-                styles={{
-                  transform: { from: "scale(1)", to: "scale(1.4)" },
-                  color: { from: isDark ? "#FFFFFF" : "#000000", to: "#FF0000" }
-                }}
-                falloff="gaussian"
-                radius={120}
-                containerRef={containerRef}
-              />
-            </div>
-          </h1>
-          <p className="text-[15px] font-light leading-relaxed text-foreground/55 max-w-[360px] mt-7 opacity-0 animate-fade-up" style={{ animationDelay: '0.6s' }}>
-            Track every km with Strava, earn XP, climb the leaderboard, and chase badges with your crew.
-          </p>
-          <div className="mt-6 text-sm text-foreground/70 border-l-2 border-primary pl-4 opacity-0 animate-fade-up" style={{ animationDelay: '0.7s' }}>
-            <p className="font-medium">Free Running Community 100+ Active Runners</p>
-            <p>Open to All</p>
-            <p className="italic mt-1">Verve for all. All for Verve.</p>
-          </div>
-          <div className="flex gap-4 mt-11 opacity-0 animate-fade-up" style={{ animationDelay: '0.8s' }}>
-            <Button asChild>
-              <a href="/api/auth/strava">Connect Strava</a>
-            </Button>
-            <Button variant="outline" asChild>
-              <Link href="/leaderboard">View Leaderboard</Link>
-            </Button>
-          </div>
-        </div>
+      <LiquidShaderHero />
 
-        {/* Right — Gradient panel */}
-        <div className="relative overflow-hidden hidden md:block">
-          <HeroParallax />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-heading text-[220px] text-white/[0.08] tracking-[-8px] whitespace-nowrap select-none pointer-events-none">
-            KM
-          </div>
-          <div className="absolute bottom-[60px] left-10 flex flex-col gap-5 opacity-0 animate-fade-up" style={{ animationDelay: '1s' }}>
-            <div className="flex flex-col">
-              <span className="font-heading text-5xl text-white leading-none">
-                <StatCounter id="counter-members" target={142} suffix="+" delay={1000} />
-              </span>
-              <span className="text-[11px] tracking-[2px] uppercase text-white/60 mt-0.5">Active members</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-heading text-5xl text-white leading-none">
-                <StatCounter id="counter-km" target={3840} suffix=" km" delay={1200} />
-              </span>
-              <span className="text-[11px] tracking-[2px] uppercase text-white/60 mt-0.5">KM logged this month</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-heading text-5xl text-white leading-none">
-                <StatCounter id="counter-badges" target={291} delay={1400} />
-              </span>
-              <span className="text-[11px] tracking-[2px] uppercase text-white/60 mt-0.5">Badges awarded</span>
+      {/* ── CORE STATS (Stacked Depth) ── */}
+      <section className="relative -mt-32 z-20 px-6 md:px-12 pb-24">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+          <TiltCard className="glass p-8 border-white/20">
+            <RevealSection>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-primary/10 rounded-xl text-primary"><Activity className="h-6 w-6" /></div>
+                <div className="text-[10px] tracking-[2px] uppercase font-bold text-muted">Global Activity</div>
+              </div>
+              <h3 className="font-heading text-5xl mb-6">12,482 KM</h3>
+              <LiquidXPBar progress={78} label="Club Weekly Goal" />
+            </RevealSection>
+          </TiltCard>
+
+          <TiltCard className="glass p-8 border-white/20">
+            <RevealSection delay={100}>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-primary/10 rounded-xl text-primary"><Zap className="h-6 w-6" /></div>
+                <div className="text-[10px] tracking-[2px] uppercase font-bold text-muted">Active Runners</div>
+              </div>
+              <h3 className="font-heading text-5xl mb-6">1,204</h3>
+              <div className="flex -space-x-3">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-off overflow-hidden">
+                    <img src={`https://i.pravatar.cc/100?u=${i}`} alt="User" />
+                  </div>
+                ))}
+                <div className="w-10 h-10 rounded-full border-2 border-white bg-primary flex items-center justify-center text-[10px] text-white font-bold">+1.2k</div>
+              </div>
+            </RevealSection>
+          </TiltCard>
+
+          <div className="relative h-full min-h-[200px] rounded-2xl overflow-hidden depth-25d">
+            <DitheringShader 
+              shape="sphere"
+              colorBack="#FDFCFB"
+              colorFront="#C0392B"
+              pxSize={2}
+              speed={2}
+              className="absolute inset-0"
+            />
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-white/10 backdrop-blur-[2px]">
+              <div className="font-heading text-4xl text-foreground">NEXT RUN</div>
+              <div className="text-[10px] tracking-[3px] uppercase font-bold text-primary mt-2">6:00 AM @ CUBBON</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── MARQUEE ── */}
-      <Marquee />
+      {/* ── FEATURES (Kinetic Grid) ── */}
+      <section className="py-24 px-6 md:px-12 bg-off relative overflow-hidden">
+        {/* Background Decorative Text */}
+        <div className="absolute top-0 right-0 font-heading text-[300px] text-primary/[0.03] leading-none select-none pointer-events-none translate-x-1/2">
+          ELITE
+        </div>
 
-      {/* ── LEADERBOARD ── */}
-      <section className="py-16 md:py-24 px-6 md:px-12" id="leaderboard">
-        <RevealSection>
-          <div className="text-[11px] tracking-[3px] uppercase text-primary mb-4">Monthly standings</div>
-        </RevealSection>
-        <RevealSection delay={80}>
-          <h2 className="font-heading text-[clamp(42px,5vw,72px)] leading-none tracking-tight text-foreground mb-8 md:mb-13">Leaderboard</h2>
-        </RevealSection>
-        <RevealSection delay={160}>
-          <div className="w-full overflow-x-auto pb-4">
-            <div className="min-w-[600px] max-w-[780px]">
-            {/* Header */}
-            <div className="grid grid-cols-[48px_1fr_120px_120px_100px] pb-3 border-b border-foreground/[0.08] text-[10px] tracking-[2px] uppercase text-muted mb-1">
-              <span>#</span><span>Runner</span><span>KM</span><span>Best pace</span><span>Badge</span>
-            </div>
-            {/* Rows */}
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-20">
+            <RevealSection>
+              <div className="text-[11px] tracking-[3px] uppercase text-primary mb-4">The Mechanics</div>
+              <h2 className="font-heading text-[ clamp(42px,8vw,90px) ] leading-[0.9] tracking-tight">
+                BUILT FOR THE <span className="italic">1%</span>.
+              </h2>
+            </RevealSection>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { rank: '01', initials: 'AR', name: 'Arjun R.', tier: 'Strider · Lv 9', km: '87.4 km', pace: '4:42 /km', badge: '🔥 On fire', top: true, gold: true },
-              { rank: '02', initials: 'PS', name: 'Priya S.', tier: 'Pacer · Lv 7', km: '74.1 km', pace: '5:08 /km', badge: '⭐ PR week', top: true, gold: false },
-              { rank: '03', initials: 'MK', name: 'Milan K.', tier: 'Pacer · Lv 6', km: '61.8 km', pace: '5:21 /km', badge: '⛰️ Hill king', top: true, gold: false },
-              { rank: '04', initials: 'SN', name: 'Sneha N.', tier: 'Jogger · Lv 3', km: '44.5 km', pace: '5:55 /km', badge: '📅 Streak', top: false, gold: false },
-              { rank: '05', initials: 'RM', name: 'Rohan M.', tier: 'Jogger · Lv 2', km: '28.3 km', pace: '6:30 /km', badge: '🌅 Early bird', top: false, gold: false },
-            ].map((r) => (
-              <div key={r.rank} className="group grid grid-cols-[48px_1fr_120px_120px_100px] items-center py-[18px] border-b border-foreground/[0.05] relative">
-                <div className="absolute -left-12 -right-12 top-0 bottom-0 bg-primary-pale opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none" />
-                <span className={`font-heading text-[22px] relative z-10 ${r.top ? 'text-primary' : 'text-muted'}`}>{r.rank}</span>
-                <div className="flex items-center gap-3.5 relative z-10">
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0 ${r.gold ? 'bg-[#FEF3C7] text-[#92400E]' : 'bg-primary-pale text-primary-deep'}`}>
-                    {r.initials}
-                  </div>
-                  <div>
-                    <div className="text-[15px]">{r.name}</div>
-                    <div className="text-[10px] tracking-[1.5px] uppercase text-muted mt-0.5">{r.tier}</div>
-                  </div>
+              { icon: <Trophy />, title: "Tiers", desc: "Climb from Jogger to Elite Tiers based on performance." },
+              { icon: <Activity />, title: "Live Board", desc: "Real-time leaderboard updates from Strava sync." },
+              { icon: <Zap />, title: "XP System", desc: "Earn experience points for every kilometer logged." },
+              { icon: <Users />, title: "Social Hub", desc: "Connect with the fastest community in the city." }
+            ].map((feature, i) => (
+              <RevealSection key={i} delay={i * 50}>
+                <div className="bg-background p-8 border border-foreground/[0.05] hover:border-primary/20 transition-colors h-full flex flex-col group">
+                  <div className="text-primary mb-6 group-hover:scale-110 transition-transform origin-left">{feature.icon}</div>
+                  <h4 className="font-heading text-2xl mb-4 uppercase tracking-wider">{feature.title}</h4>
+                  <p className="text-sm font-light text-foreground/50 leading-relaxed">{feature.desc}</p>
                 </div>
-                <span className="text-[15px] font-light relative z-10">{r.km}</span>
-                <span className="text-[15px] font-light relative z-10">{r.pace}</span>
-                <span className="text-[10px] tracking-[1.5px] uppercase px-2.5 py-1 border border-primary-pale text-primary bg-primary-pale inline-block relative z-10">{r.badge}</span>
-              </div>
-            ))}
-            </div>
-          </div>
-        </RevealSection>
-      </section>
-
-      {/* ── FEATURES ── */}
-      <section className="py-16 md:py-20 px-6 md:px-12 bg-off" id="features">
-        <RevealSection>
-          <div className="text-[11px] tracking-[3px] uppercase text-primary mb-4">What you get</div>
-        </RevealSection>
-        <RevealSection delay={80}>
-          <h2 className="font-heading text-[clamp(42px,5vw,72px)] leading-none tracking-tight text-foreground mb-0">Built for<br />runners.</h2>
-        </RevealSection>
-        <RevealSection delay={160}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-foreground/[0.08] border border-foreground/[0.08] mt-13">
-            {[
-              { icon: '⚡', title: 'XP & Levels', desc: 'Earn XP every km. Unlock tiers from Jogger to Ultrarunner. Group runs give 2× bonus.' },
-              { icon: '🏅', title: 'Secret Badges', desc: 'Hidden until earned. Rain Runner, Night Owl, Sub-25 5K — discover what\'s waiting.' },
-              { icon: '⚔️', title: 'Head-to-Head', desc: 'Challenge any member to a weekly distance duel. Winner earns bragging rights and a badge.' },
-              { icon: '📡', title: 'Strava Sync', desc: 'Connect once. Every run auto-syncs via webhook — no manual logging, ever.' },
-              { icon: '👑', title: 'Segment Crown', desc: 'Hold the club record on a local stretch. Wear a crown badge until someone beats you.' },
-              { icon: '📊', title: 'Monthly Wrapped', desc: 'Spotify-style stats card every month. Total km, top badge, favourite run time. Share-ready.' },
-            ].map((f) => (
-              <div key={f.title} className="bg-background p-11 hover:bg-off transition-colors duration-200">
-                <span className="text-[28px] mb-5 block">{f.icon}</span>
-                <div className="font-heading text-[28px] tracking-wide text-foreground mb-3 leading-none">{f.title}</div>
-                <p className="text-sm font-light leading-relaxed text-foreground/55">{f.desc}</p>
-              </div>
+              </RevealSection>
             ))}
           </div>
-        </RevealSection>
+        </div>
       </section>
 
-      {/* ── CHALLENGES ── */}
-      <section className="bg-foreground py-16 md:py-20 px-6 md:px-12" id="challenges">
-        <RevealSection>
-          <div className="text-[11px] tracking-[3px] uppercase text-primary-light mb-4">Active now</div>
-        </RevealSection>
-        <RevealSection delay={80}>
-          <h2 className="font-heading text-[clamp(42px,5vw,72px)] leading-none tracking-tight text-white mb-13">Challenges</h2>
-        </RevealSection>
-
-        {[
-          { name: 'Club 500km — June', sub: 'Team · 18 days left · 34 runners', pct: 64 },
-          { name: 'Mumbai → Pune Virtual Run', sub: 'Club journey · 148km remaining', pct: 81 },
-          { name: 'Rise & Run streak', sub: 'Personal · Run before 7am, 7 days', pct: 57 },
-        ].map((ch, i) => (
-          <RevealSection key={ch.name} delay={160 + i * 80}>
-            <div className="flex items-center gap-9 bg-white/[0.04] border border-white/[0.08] p-8 mb-4 hover:bg-white/[0.07] transition-colors duration-200">
-              <div className="flex-1">
-                <div className="text-base text-white">{ch.name}</div>
-                <div className="text-xs text-white/40 mt-0.5">{ch.sub}</div>
+      {/* ── GAMIFIED PROGRESSION ── */}
+      <section className="py-24 px-6 md:px-12 bg-background">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
+          <div className="flex-1">
+            <RevealSection>
+              <div className="text-[11px] tracking-[3px] uppercase text-primary mb-6">Gamification</div>
+              <h2 className="font-heading text-7xl mb-8">Earning Your <span className="text-primary">Legacy</span>.</h2>
+              <p className="text-lg font-light text-foreground/60 mb-10 leading-relaxed max-w-xl">
+                Every run is an investment in your rank. Our advanced XP algorithm weighs distance, pace, and consistency to determine your standing in the club.
+              </p>
+              
+              <div className="space-y-8">
+                <LiquidXPBar progress={45} label="Legacy Progress" />
+                <LiquidXPBar progress={92} label="Consistency Modifier" color="#000" />
               </div>
-              <div className="flex-[2] h-1 bg-white/[0.08] rounded-sm overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-primary to-primary-light rounded-sm" style={{ width: `${ch.pct}%` }} />
-              </div>
-              <div className="font-heading text-[28px] text-primary-light min-w-[60px] text-right">{ch.pct}%</div>
-            </div>
-          </RevealSection>
-        ))}
+            </RevealSection>
+          </div>
+          
+          <div className="flex-1 grid grid-cols-2 gap-6 relative">
+            {/* Floating Badges */}
+            <GlassBadge label="Early Bird" delay={0} className="w-full" />
+            <GlassBadge label="Century" delay={0.5} className="mt-12 w-full" />
+            <GlassBadge label="Tempo King" delay={0.2} className="-mt-8 w-full" />
+            <GlassBadge label="Urban Dash" delay={0.7} className="w-full" />
+            
+            {/* Background Glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/10 blur-[100px] rounded-full -z-10" />
+          </div>
+        </div>
       </section>
 
-      {/* ── WHATSAPP ── */}
+      {/* ── SOCIAL & COMMUNITY ── */}
       <WhatsAppSection />
-
-      {/* ── INSTAGRAM ── */}
       <InstagramPreview />
 
       {/* ── FOOTER ── */}
       <footer className="px-6 md:px-12 py-10 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-foreground/[0.08]">
-        <div className="flex items-center gap-6">
-          <img src="/logo.png" alt="Verve Run Club" className="h-8 w-auto invert dark:invert-0" />
-          <a href="https://www.instagram.com/verve.runclub/" target="_blank" rel="noopener noreferrer" className="text-sm text-muted hover:text-primary transition-colors">
-            Instagram
-          </a>
+        <div className="flex items-center gap-3">
+          <img src="/logo.png" alt="Verve" className="h-6 w-auto invert dark:invert-0" />
+          <span className="font-heading text-lg tracking-[2px] text-primary">VERVE RUN CLUB</span>
         </div>
-        <div className="text-xs text-muted tracking-wide text-center md:text-right">© 2026 Verve Run Club · KIIT, Odisha · BBSR</div>
+        <p className="text-[10px] tracking-[2px] uppercase text-muted">© 2024 Verve. Built for the kinetic era.</p>
       </footer>
-      </div>
-    </Suspense>
+    </main>
   )
 }
