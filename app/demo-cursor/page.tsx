@@ -3,9 +3,8 @@
 import { useRef } from "react"
 import { useTheme } from "next-themes"
 import TextCursorProximity from "@/components/ui/text-cursor-proximity"
-import { Pencil, PenTool, Edit, PencilLine } from "lucide-react"
 
-const icons = [Pencil, PenTool, Edit, PencilLine]
+const ASCII = ["\u270E", "\u2710", "\u2711", "\u2711"]
 
 export default function Preview() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -14,14 +13,13 @@ export default function Preview() {
 
   return (
     <div
-      className="w-full h-full min-h-[calc(100vh-86px)] flex flex-col items-center justify-center p-6 sm:p-12 md:p-16 lg:p-24"
+      className="w-full h-full flex flex-col items-center justify-center p-6 sm:p-12 md:p-16 lg:p-24"
       ref={containerRef}
     >
       <div 
-        className="relative w-full cursor-pointer overflow-hidden justify-start items-start flex"
+        className="relative w-full cursor-pointer overflow-hidden justify-start items-start flex text-white"
         style={{ 
-          backgroundColor: isDark ? "#111111" : "#FFFFFF",
-          color: isDark ? "#FFFFFF" : "#000000",
+          backgroundColor: isDark ? "#000000" : "#0000FF",
           minHeight: "400px",
           height: "100%"
         }}
@@ -36,8 +34,8 @@ export default function Preview() {
                 to: "scale(1.4)",
               },
               color: { 
-                from: isDark ? "#FFFFFF" : "#000000", 
-                to: "#FF0000"
+                from: "#FFFFFF", 
+                to: isDark ? "#FF4444" : "#FF87C1"
               },
             }}
             falloff="gaussian"
@@ -53,8 +51,8 @@ export default function Preview() {
                 to: "scale(1.4)",
               },
               color: { 
-                from: isDark ? "#FFFFFF" : "#000000", 
-                to: "#FF0000"
+                from: "#FFFFFF", 
+                to: isDark ? "#FF4444" : "#FF87C1"
               },
             }}
             falloff="gaussian"
@@ -63,11 +61,15 @@ export default function Preview() {
           />
         </div>
 
-        <div className="absolute bottom-6 flex w-full justify-between px-6">
-          {icons.map((Icon, i) => (
-            <div key={i} className="opacity-80">
-              <Icon className="w-6 h-6" />
-            </div>
+        <div className="absolute bottom-2 flex w-full justify-between px-6">
+          {ASCII.map((pencil, i) => (
+            <span 
+              key={i} 
+              className="text-2xl opacity-80"
+              style={{ fontFamily: "serif" }}
+            >
+              {pencil}
+            </span>
           ))}
         </div>
 
@@ -80,8 +82,8 @@ export default function Preview() {
               to: "scale(1.4)",
             },
             color: { 
-              from: isDark ? "#FFFFFF" : "#000000", 
-              to: "#FF0000"
+              from: "#FFFFFF", 
+              to: isDark ? "#FF4444" : "#FF87C1"
             },
           }}
           falloff="linear"
@@ -92,3 +94,5 @@ export default function Preview() {
     </div>
   )
 }
+
+export { Preview }

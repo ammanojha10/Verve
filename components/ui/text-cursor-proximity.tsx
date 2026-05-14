@@ -19,7 +19,7 @@ interface TextProps extends React.HTMLAttributes<HTMLSpanElement> {
   styles: Partial<{
     [K in keyof CSSPropertiesWithValues]: StyleValue<K>
   }>
-  containerRef: React.RefObject<HTMLDivElement | null>
+  containerRef: React.RefObject<HTMLDivElement>
   radius?: number
   falloff?: "linear" | "exponential" | "gaussian"
 }
