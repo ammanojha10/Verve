@@ -54,6 +54,8 @@ export async function GET(request: Request) {
   )
 
   // 1. Ensure Auth User exists
+  const name = `${athlete.firstname} ${athlete.lastname}`.trim()
+  const avatarUrl = athlete.profile_medium || athlete.profile
   let userId: string
   const email = `strava-${athlete.id}@verve.run`
   
