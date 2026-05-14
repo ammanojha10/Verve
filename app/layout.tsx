@@ -21,19 +21,23 @@ export const metadata: Metadata = {
   description: 'Connect, compete, and conquer with the VERVE run club platform. Integrated with Strava.',
 }
 
+import { ThemeProvider } from '@/components/theme-provider'
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${bebas.variable} ${dmSans.variable} font-sans antialiased bg-background text-foreground min-h-screen flex flex-col`}>
-        <Cursor />
-        <Navbar />
-        <main className="flex-1 flex flex-col pt-[86px]">
-          {children}
-        </main>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+          <Cursor />
+          <Navbar />
+          <main className="flex-1 flex flex-col pt-[86px]">
+            {children}
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   )
