@@ -19,8 +19,9 @@ export function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 px-6 md:px-12 py-4 md:py-[22px] z-[100] md:mix-blend-multiply bg-background/95 backdrop-blur-md border-b border-foreground/[0.05] md:border-none md:bg-transparent md:backdrop-blur-none">
       <div className="flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 no-underline">
-          <img src="/logo.png" alt="Verve Run Club" className="h-8 md:h-10 w-auto invert dark:invert-0" />
+        <Link href="/" className="flex items-center gap-3 no-underline">
+          <img src="/logo.png" alt="Verve Run Club Logo" className="h-8 md:h-10 w-auto invert dark:invert-0" />
+          <span className="font-heading text-[24px] md:text-[28px] tracking-[4px] text-primary">VERVE</span>
         </Link>
         <nav className="hidden md:flex gap-9">
           {navItems.map((item) => {

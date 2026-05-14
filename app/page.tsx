@@ -25,7 +25,7 @@ export default function LandingPage() {
             Track every km with Strava, earn XP, climb the leaderboard, and chase badges with your crew.
           </p>
           <div className="mt-6 text-sm text-foreground/70 border-l-2 border-primary pl-4 opacity-0 animate-fade-up" style={{ animationDelay: '0.7s' }}>
-            <p className="font-medium">🏃 Free Running Community 100+ Active Runners</p>
+            <p className="font-medium">Free Running Community 100+ Active Runners</p>
             <p>Open to All</p>
             <p className="italic mt-1">Verve for all. All for Verve.</p>
           </div>
