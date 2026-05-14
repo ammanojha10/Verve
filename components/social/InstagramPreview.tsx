@@ -1,7 +1,7 @@
 'use client'
 
 import { RevealSection } from '@/components/ui/RevealSection'
-import { Instagram, Heart, MessageCircle } from 'lucide-react'
+import { Camera, Heart, MessageCircle } from 'lucide-react'
 
 const INSTA_POSTS = [
   { id: 1, likes: 124, comments: 12, img: 'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=500&q=80' },
@@ -29,7 +29,7 @@ export function InstagramPreview() {
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors pb-1 border-b border-foreground/10"
           >
-            <Instagram className="h-4 w-4" />
+            <Camera className="h-4 w-4" />
             @verve.runclub
           </a>
         </RevealSection>

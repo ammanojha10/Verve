@@ -4,7 +4,7 @@ import { RevealSection } from '@/components/ui/RevealSection'
 import { Button } from '@/components/ui/Button'
 import { WhatsAppSection } from '@/components/social/WhatsAppSection'
 import { InstagramPreview } from '@/components/social/InstagramPreview'
-import { CheckCircle2, Strava } from 'lucide-react'
+import { CheckCircle2, Activity } from 'lucide-react'
 
 export default function JoinPage() {
   return (
