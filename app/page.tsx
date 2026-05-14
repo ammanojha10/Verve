@@ -1,25 +1,65 @@
+"use client"
+
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { Marquee } from '@/components/ui/Marquee'
 import { StatCounter } from '@/components/ui/StatCounter'
 import { RevealSection } from '@/components/ui/RevealSection'
 import { HeroParallax } from '@/components/ui/HeroParallax'
+import TextCursorProximity from '@/components/ui/text-cursor-proximity'
+import { useRef } from 'react'
+import { useTheme } from 'next-themes'
 
 export default function LandingPage() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === "dark"
   return (
     <div className="flex-1 -mt-[86px]">
 
       {/* ── HERO ── */}
-      <section className="min-h-screen grid grid-cols-1 md:grid-cols-2 relative overflow-hidden">
+      <section ref={containerRef} className="min-h-screen grid grid-cols-1 md:grid-cols-2 relative overflow-hidden">
         {/* Left */}
         <div className="flex flex-col justify-center px-6 md:px-12 py-20 md:py-32 relative z-10">
           <div className="text-[11px] tracking-[3px] uppercase text-primary mb-6 opacity-0 animate-fade-up" style={{ animationDelay: '0.2s' }}>
             KIIT Run Club · Est. 2026 · BBSR
           </div>
           <h1 className="font-heading text-[clamp(72px,8vw,130px)] leading-[0.92] tracking-tight text-foreground opacity-0 animate-fade-up" style={{ animationDelay: '0.4s' }}>
-            Run.<br />
-            <span className="text-primary">Earn.</span><br />
-            Dominate.
+            <div className="flex flex-col">
+              <TextCursorProximity
+                label="Run."
+                className="will-change-transform font-heading"
+                styles={{
+                  transform: { from: "scale(1)", to: "scale(1.4)" },
+                  color: { from: isDark ? "#FFFFFF" : "#000000", to: "#FF0000" }
+                }}
+                falloff="gaussian"
+                radius={120}
+                containerRef={containerRef}
+              />
+              <TextCursorProximity
+                label="Earn."
+                className="will-change-transform font-heading text-primary"
+                styles={{
+                  transform: { from: "scale(1)", to: "scale(1.4)" },
+                  color: { from: "#C0392B", to: "#FF0000" }
+                }}
+                falloff="gaussian"
+                radius={120}
+                containerRef={containerRef}
+              />
+              <TextCursorProximity
+                label="Dominate."
+                className="will-change-transform font-heading"
+                styles={{
+                  transform: { from: "scale(1)", to: "scale(1.4)" },
+                  color: { from: isDark ? "#FFFFFF" : "#000000", to: "#FF0000" }
+                }}
+                falloff="gaussian"
+                radius={120}
+                containerRef={containerRef}
+              />
+            </div>
           </h1>
           <p className="text-[15px] font-light leading-relaxed text-foreground/55 max-w-[360px] mt-7 opacity-0 animate-fade-up" style={{ animationDelay: '0.6s' }}>
             Track every km with Strava, earn XP, climb the leaderboard, and chase badges with your crew.
