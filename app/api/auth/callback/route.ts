@@ -53,64 +53,57 @@ export async function GET(request: Request) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
 
-  // Upsert profile keyed by strava_id (custom UUID stable per athlete)
-  const athleteId = `strava-${athlete.id}`
-  const name = `${athlete.firstname} ${athlete.lastname}`.trim()
-  const avatarUrl = athlete.profile_medium || athlete.profile
-
-  // Check if a profile with this strava_id already exists
-  const { data: existing } = await supabase
-    .from('profiles')
-    .select('id, xp')
-    .eq('strava_id', athlete.id)
-    .single()
-
+  // 1. Ensure Auth User exists
   let userId: string
+  const email = `strava-${athlete.id}@verve.run`
+  
+  // Try to find existing auth user first
+  const { data: searchData } = await supabase.auth.admin.listUsers()
+  // Since listUsers is paginated, we should ideally use a better way, 
+  // but for now let's try to create and handle "already exists"
+  
+  const { data: authUser, error: authErr } = await supabase.auth.admin.createUser({
+    email,
+    password: crypto.randomUUID(),
+    email_confirm: true,
+    user_metadata: { strava_id: athlete.id, name },
+  })
 
-  if (existing) {
-    userId = existing.id
-    // Update tokens
-    await supabase
-      .from('profiles')
-      .update({
-        strava_access_token: access_token,
-        strava_refresh_token: refresh_token,
-        strava_token_expires_at: expires_at,
-        avatar_url: avatarUrl,
-        name,
-        tier: getTier(existing.xp),
-      })
-      .eq('id', userId)
-  } else {
-    // New user — need to create a Supabase auth user first
-    const { data: authUser, error: authErr } = await supabase.auth.admin.createUser({
-      email: `strava-${athlete.id}@verve.run`,
-      password: crypto.randomUUID(),
-      email_confirm: true,
-      user_metadata: { strava_id: athlete.id, name },
-    })
-
-    if (authErr || !authUser.user) {
-      // Check if user already exists
-      if (authErr?.message?.includes('already registered') || authErr?.status === 422) {
-        const { data: searchData, error: searchErr } = await supabase.auth.admin.listUsers()
-        const existingAuthUser = searchData?.users.find(u => u.email === `strava-${athlete.id}@verve.run`)
-        
-        if (existingAuthUser) {
-          userId = existingAuthUser.id
-        } else {
-          console.error('Failed to create or find auth user:', authErr)
-          return NextResponse.redirect(`${appUrl}/?error=user_creation_failed`)
-        }
-      } else {
-        console.error('Failed to create auth user:', authErr)
-        return NextResponse.redirect(`${appUrl}/?error=user_creation_failed`)
-      }
+  if (authErr) {
+    // If user exists, we need to get their ID. 
+    // Admin listUsers is the only way without knowing the ID, 
+    // but we can try to "sign in" or just search again.
+    const { data: users } = await supabase.auth.admin.listUsers()
+    const found = users?.users.find(u => u.email === email)
+    if (found) {
+      userId = found.id
     } else {
-      userId = authUser.user.id
+      console.error('Auth User error:', authErr)
+      return NextResponse.redirect(`${appUrl}/?error=user_creation_failed`)
     }
+  } else {
+    userId = authUser.user!.id
+  }
 
-    await supabase.from('profiles').insert({
+  // 2. Upsert Profile
+  const { error: profileErr } = await supabase.from('profiles').upsert({
+    id: userId,
+    name,
+    strava_id: athlete.id,
+    strava_access_token: access_token,
+    strava_refresh_token: refresh_token,
+    strava_token_expires_at: expires_at,
+    avatar_url: avatarUrl,
+    tier: 'Jogger', // Default, but upsert won't overwrite XP if we handle it
+  }, {
+    onConflict: 'strava_id',
+    ignoreDuplicates: false,
+  })
+
+  if (profileErr) {
+    console.error('Profile Upsert Error:', profileErr)
+    // Fallback attempt by ID if strava_id conflict fails
+    await supabase.from('profiles').upsert({
       id: userId,
       name,
       strava_id: athlete.id,
@@ -118,9 +111,6 @@ export async function GET(request: Request) {
       strava_refresh_token: refresh_token,
       strava_token_expires_at: expires_at,
       avatar_url: avatarUrl,
-      xp: 0,
-      tier: 'Jogger',
-      streak_weeks: 0,
     })
   }
 

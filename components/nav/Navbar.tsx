@@ -23,8 +23,8 @@ export function Navbar() {
     const handleScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', handleScroll)
     
-    const hasUserId = document.cookie.includes('verve_user_id')
-    setIsLoggedIn(hasUserId)
+    const isLoggedIn = document.cookie.split(';').some((item) => item.trim().startsWith('verve_name='))
+    setIsLoggedIn(isLoggedIn)
     
     return () => window.removeEventListener('scroll', handleScroll)
   }, [pathname])
