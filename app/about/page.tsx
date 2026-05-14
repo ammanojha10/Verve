@@ -2,7 +2,6 @@
 
 import { RevealSection } from '@/components/ui/RevealSection'
 import { Button } from '@/components/ui/Button'
-import { TiltCard } from '@/components/ui/TiltCard'
 import Link from 'next/link'
 
 export default function AboutPage() {
@@ -65,7 +64,7 @@ export default function AboutPage() {
           <div className="text-[11px] tracking-[3px] uppercase text-primary-light mb-12 text-center">Core Values</div>
         </RevealSection>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
-          { [
+          {[
             { 
               title: 'Legacy', 
               desc: 'We run for the version of ourselves that will exist in 20 years. Every km is a deposit into your future health.' 
@@ -79,11 +78,9 @@ export default function AboutPage() {
               desc: 'We value the streak over the speed. Showing up day after day is what builds a true athlete.' 
             }
           ].map((value, i) => (
-            <RevealSection key={value.title} delay={i * 100}>
-              <TiltCard className="glass p-10 border-white/10 text-center md:text-left h-full">
-                <h3 className="font-heading text-3xl mb-4 text-primary">{value.title}</h3>
-                <p className="text-sm font-light leading-relaxed text-foreground/70">{value.desc}</p>
-              </TiltCard>
+            <RevealSection key={value.title} delay={i * 100} className="text-center md:text-left">
+              <h3 className="font-heading text-3xl mb-4 text-primary-light">{value.title}</h3>
+              <p className="text-sm font-light leading-relaxed text-white/60">{value.desc}</p>
             </RevealSection>
           ))}
         </div>

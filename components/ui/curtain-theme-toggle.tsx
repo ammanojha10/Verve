@@ -36,26 +36,26 @@ export interface ThemeToggleProps {
 
 const TOKENS: Record<Theme, Record<string, string>> = {
   light: {
-    pageBg:    "#FDFCFB",
+    pageBg:    "#FDFCFB", // Verve White
     pageText:  "#1A0A09",
-    barBg:     "#C0392B",
-    barText:   "#FFFFFF",
-    barBorder: "rgba(255,255,255,0.15)",
-    btnBg:     "#FDFCFB",
-    btnText:   "#C0392B",
-    btnRing:   "rgba(255,255,255,0.2)",
+    barBg:     "#1A0A09",
+    barText:   "#FDFCFB",
+    barBorder: "rgba(255,255,255,0.07)",
+    btnBg:     "#C0392B", // Verve Red
+    btnText:   "#FDFCFB",
+    btnRing:   "rgba(192, 57, 43, 0.25)",
     inputBg:   "rgba(255,255,255,0.1)",
-    inputText: "#FFFFFF",
+    inputText: "#FDFCFB",
   },
   dark: {
-    pageBg:    "#0E0E0E",
+    pageBg:    "#0A0505", // Deep dark
     pageText:  "#FDFCFB",
-    barBg:     "#FDFCFB",
-    barText:   "#C0392B",
-    barBorder: "rgba(0,0,0,0.1)",
-    btnBg:     "#0E0E0E",
-    btnText:   "#FDFCFB",
-    btnRing:   "rgba(0,0,0,0.25)",
+    barBg:     "#C0392B", // Verve Red Bar
+    barText:   "#FDFCFB",
+    barBorder: "rgba(0,0,0,0.10)",
+    btnBg:     "#FDFCFB",
+    btnText:   "#C0392B",
+    btnRing:   "rgba(255,255,255,0.25)",
     inputBg:   "rgba(0,0,0,0.08)",
     inputText: "#C0392B",
   },

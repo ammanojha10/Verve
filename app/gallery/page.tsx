@@ -2,7 +2,6 @@
 
 import { RevealSection } from '@/components/ui/RevealSection'
 import { Badge } from '@/components/ui/Badge'
-import { TiltCard } from '@/components/ui/TiltCard'
 import { Calendar, MapPin, Users } from 'lucide-react'
 
 const RUN_ARCHIVE = [
@@ -61,9 +60,9 @@ export default function GalleryPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {RUN_ARCHIVE.map((run, i) => (
           <RevealSection key={run.id} delay={i * 80}>
-            <TiltCard className="glass overflow-hidden border-white/20 h-full">
+            <div className="group bg-background border border-foreground/[0.08] overflow-hidden hover:border-primary transition-colors duration-300">
               {/* Image Placeholder */}
-              <div className="aspect-[16/9] bg-primary/5 relative overflow-hidden">
+              <div className="aspect-[16/9] bg-off relative overflow-hidden">
                 <div className="absolute inset-0 flex items-center justify-center font-heading text-4xl text-primary/10 select-none">
                   VERVE RUN
                 </div>
@@ -75,7 +74,7 @@ export default function GalleryPage() {
               </div>
               
               <div className="p-6">
-                <div className="text-[10px] tracking-[2px] uppercase text-primary mb-2 font-bold">{run.type}</div>
+                <div className="text-[10px] tracking-[2px] uppercase text-primary mb-2">{run.type}</div>
                 <h3 className="font-heading text-2xl mb-4 group-hover:text-primary transition-colors">{run.title}</h3>
                 
                 <div className="space-y-3">
@@ -93,7 +92,7 @@ export default function GalleryPage() {
                   </div>
                 </div>
               </div>
-            </TiltCard>
+            </div>
           </RevealSection>
         ))}
       </div>

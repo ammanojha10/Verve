@@ -14,12 +14,9 @@
   --color-muted-foreground: #1A0A09;
   --color-off: #F5F0EF;
   
-  --glass-bg: rgba(255, 255, 255, 0.4);
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --glass-reflection: rgba(255, 255, 255, 0.6);
-  
-  --shadow-25d: 20px 20px 60px #d9d4c9, -20px -20px 60px #ffffff;
-  --shadow-25d-hover: 10px 10px 30px #d9d4c9, -10px -10px 30px #ffffff;
+  --shadow-2-5d: 0 10px 30px -10px rgba(192, 57, 43, 0.2), 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.4);
   
   --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-bebas-neue), ui-sans-serif, system-ui, sans-serif;
@@ -58,10 +55,40 @@
     position: fixed;
     inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-    opacity: 0.018;
+    opacity: 0.012;
     pointer-events: none;
     z-index: 9990;
   }
+}
+
+@layer utilities {
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid var(--glass-border);
+  }
+  
+  .glass-dark {
+    background: rgba(26, 10, 9, 0.7);
+    backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .shadow-2-5d {
+    box-shadow: var(--shadow-2-5d);
+  }
+  
+  .liquid-text {
+    background: linear-gradient(to right, #C0392B, #E74C3C, #C0392B);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: liquid 4s linear infinite;
+  }
+}
+
+@keyframes liquid {
+  to { background-position: 200% center; }
 }
 
 /* Animations from reference */
@@ -97,41 +124,6 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #C0392B;
-}
-
-/* Liquid Glass Utility */
-.glass {
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px) saturate(180%);
-  border: 1px solid var(--glass-border);
-  box-shadow: 0 8px 32px 0 rgba(192, 57, 43, 0.05);
-}
-
-.dark .glass {
-  background: rgba(26, 10, 9, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* 2.5D Depth */
-.depth-25d {
-  box-shadow: var(--shadow-25d);
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.depth-25d:hover {
-  box-shadow: var(--shadow-25d-hover);
-  transform: translateY(-5px);
-}
-
-/* Kinetic Typography */
-.kinetic-text {
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.kinetic-text:hover {
-  letter-spacing: 0.1em;
-  color: var(--color-primary);
-  transform: scale(1.05);
 }
 
 /* Force custom cursor hiding on interactive elements */

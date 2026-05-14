@@ -7,10 +7,10 @@ import { cn } from '@/lib/utils'
 interface TiltCardProps {
   children: ReactNode
   className?: string
-  glareOpacity?: number
+  glass?: boolean
 }
 
-export function TiltCard({ children, className, glareOpacity = 0.15 }: TiltCardProps) {
+export function TiltCard({ children, className, glass = true }: TiltCardProps) {
   const cardRef = useRef<HTMLDivElement>(null)
   
   const x = useMotionValue(0)
@@ -19,21 +19,21 @@ export function TiltCard({ children, className, glareOpacity = 0.15 }: TiltCardP
   const mouseXSpring = useSpring(x)
   const mouseYSpring = useSpring(y)
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"])
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"])
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['10deg', '-10deg'])
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-10deg', '10deg'])
 
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return
     
     const rect = cardRef.current.getBoundingClientRect()
     const width = rect.width
     const height = rect.height
     
-    const mouseX = event.clientX - rect.left
-    const mouseY = event.clientY - rect.top
+    const mouseX = e.clientX - rect.left
+    const mouseY = e.clientY - rect.top
     
-    const xPct = (mouseX / width) - 0.5
-    const yPct = (mouseY / height) - 0.5
+    const xPct = mouseX / width - 0.5
+    const yPct = mouseY / height - 0.5
     
     x.set(xPct)
     y.set(yPct)
@@ -50,30 +50,28 @@ export function TiltCard({ children, className, glareOpacity = 0.15 }: TiltCardP
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
-        rotateY,
         rotateX,
-        transformStyle: "preserve-3d",
+        rotateY,
+        transformStyle: 'preserve-3d',
       }}
       className={cn(
-        "relative rounded-2xl transition-shadow duration-300",
+        "relative rounded-2xl transition-all duration-200 ease-out",
+        glass ? "glass shadow-2-5d" : "bg-white border border-foreground/5 shadow-lg",
         className
       )}
     >
       <div 
-        style={{ transform: "translateZ(50px)", transformStyle: "preserve-3d" }}
-        className="relative h-full w-full"
+        style={{
+          transform: 'translateZ(50px)',
+          transformStyle: 'preserve-3d',
+        }}
+        className="relative z-10"
       >
         {children}
       </div>
-
-      {/* Glare effect */}
-      <motion.div
-        style={{
-          background: `radial-gradient(circle at var(--x) var(--y), rgba(255,255,255,${glareOpacity}) 0%, transparent 80%)`,
-          transform: "translateZ(51px)",
-        }}
-        className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-      />
+      
+      {/* Decorative reflection */}
+      <div className="absolute inset-0 rounded-2xl pointer-events-none bg-gradient-to-br from-white/20 to-transparent z-20" />
     </motion.div>
   )
 }

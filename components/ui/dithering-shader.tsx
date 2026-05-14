@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useRef } from "react"
-import * as THREE from "three"
+import { useEffect, useRef } from 'react'
+import * as THREE from 'three'
 
 interface DitheringShaderProps {
-  shape?: "sphere" | "plane"
-  type?: "random" | "ordered"
+  shape?: 'sphere' | 'plane'
+  type?: 'random' | 'bayer'
   colorBack?: string
   colorFront?: string
   pxSize?: number
@@ -14,44 +14,37 @@ interface DitheringShaderProps {
 }
 
 export function DitheringShader({
-  shape = "sphere",
-  type = "random",
-  colorBack = "#000000",
-  colorFront = "#C0392B",
+  shape = 'sphere',
+  type = 'random',
+  colorBack = '#000000',
+  colorFront = '#C0392B',
   pxSize = 2,
   speed = 1.0,
-  className = "",
+  className = '',
 }: DitheringShaderProps) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null)
-  const animationRef = useRef<number>(0)
 
   useEffect(() => {
     if (!containerRef.current) return
 
-    const container = containerRef.current
-    const width = container.clientWidth
-    const height = container.clientHeight
+    const width = containerRef.current.clientWidth
+    const height = containerRef.current.clientHeight
 
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000)
     camera.position.z = 2
 
-    const renderer = new THREE.WebGLRenderer({ 
-      antialias: false,
-      alpha: true 
-    })
+    const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true })
     renderer.setSize(width, height)
     renderer.setPixelRatio(window.devicePixelRatio / pxSize)
-    container.appendChild(renderer.domElement)
-    rendererRef.current = renderer
+    containerRef.current.appendChild(renderer.domElement)
 
     const vertexShader = `
       varying vec2 vUv;
       varying vec3 vNormal;
       void main() {
         vUv = uv;
-        vNormal = normal;
+        vNormal = normalize(normalMatrix * normal);
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }
     `
@@ -60,7 +53,6 @@ export function DitheringShader({
       uniform float time;
       uniform vec3 colorBack;
       uniform vec3 colorFront;
-      uniform vec2 resolution;
       varying vec2 vUv;
       varying vec3 vNormal;
 
@@ -69,65 +61,64 @@ export function DitheringShader({
       }
 
       void main() {
-        vec3 normal = normalize(vNormal);
-        float light = dot(normal, vec3(1.0, 1.0, 1.0)) * 0.5 + 0.5;
-        
+        float diff = max(dot(vNormal, vec3(0.5, 0.5, 1.0)), 0.0);
         float noise = random(gl_FragCoord.xy + time);
-        float threshold = light;
         
-        vec3 finalColor = noise < threshold ? colorFront : colorBack;
-        gl_FragColor = vec4(finalColor, 1.0);
+        vec3 color = mix(colorBack, colorFront, step(noise, diff));
+        gl_FragColor = vec4(color, 1.0);
       }
     `
 
-    const geometry = shape === "sphere" ? new THREE.SphereGeometry(1, 64, 64) : new THREE.PlaneGeometry(2, 2)
+    const geometry = shape === 'sphere' ? new THREE.SphereGeometry(1, 64, 64) : new THREE.PlaneGeometry(2, 2)
     const material = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
         colorBack: { value: new THREE.Color(colorBack) },
         colorFront: { value: new THREE.Color(colorFront) },
-        resolution: { value: new THREE.Vector2(width, height) },
       },
       vertexShader,
       fragmentShader,
+      transparent: true,
     })
 
     const mesh = new THREE.Mesh(geometry, material)
     scene.add(mesh)
 
-    const animate = () => {
-      animationRef.current = requestAnimationFrame(animate)
-      material.uniforms.time.value += 0.01 * speed
-      if (shape === "sphere") {
-        mesh.rotation.y += 0.005 * speed
-        mesh.rotation.x += 0.003 * speed
+    let animationId: number
+    const animate = (t: number) => {
+      animationId = requestAnimationFrame(animate)
+      material.uniforms.time.value = t * 0.001 * speed
+      if (shape === 'sphere') {
+        mesh.rotation.y += 0.01 * speed
+        mesh.rotation.x += 0.005 * speed
       }
       renderer.render(scene, camera)
     }
 
+    animate(0)
+
     const handleResize = () => {
-      const w = container.clientWidth
-      const h = container.clientHeight
+      if (!containerRef.current) return
+      const w = containerRef.current.clientWidth
+      const h = containerRef.current.clientHeight
       camera.aspect = w / h
       camera.updateProjectionMatrix()
       renderer.setSize(w, h)
-      material.uniforms.resolution.value.set(w, h)
     }
 
-    window.addEventListener("resize", handleResize)
-    animate()
+    window.addEventListener('resize', handleResize)
 
     return () => {
-      window.removeEventListener("resize", handleResize)
-      cancelAnimationFrame(animationRef.current)
-      if (container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement)
-      }
+      window.removeEventListener('resize', handleResize)
+      cancelAnimationFrame(animationId)
+      renderer.dispose()
       geometry.dispose()
       material.dispose()
-      renderer.dispose()
+      if (containerRef.current?.contains(renderer.domElement)) {
+        containerRef.current.removeChild(renderer.domElement)
+      }
     }
   }, [shape, type, colorBack, colorFront, pxSize, speed])
 
-  return <div ref={containerRef} className={`w-full h-full ${className}`} />
+  return <div ref={containerRef} className={`w-full h-full overflow-hidden ${className}`} />
 }
