@@ -27,7 +27,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
   const initials = profile.name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() || '??'
 
   return (
-    <div className="max-w-4xl mx-auto px-12 py-16">
+    <div className="max-w-4xl mx-auto px-6 md:px-12 py-10 md:py-16">
       {/* Profile Header */}
       <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-16">
         {profile.avatar_url ? (
@@ -59,7 +59,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-px bg-foreground/[0.08] border border-foreground/[0.08]">
         {earnedBadges.length > 0 ? earnedBadges.map((badge: any) => (
-          <div key={badge.id} className="bg-background p-8 text-center hover:bg-off transition-colors">
+          <div key={badge.id} className="bg-background p-4 md:p-8 text-center hover:bg-off transition-colors">
             <div className="text-4xl mb-3">{badge.icon || '🏅'}</div>
             <h3 className="font-heading text-lg mb-1">{badge.name}</h3>
             <p className="text-xs text-muted">{badge.description}</p>

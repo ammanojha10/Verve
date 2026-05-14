@@ -16,7 +16,7 @@ export default async function LeaderboardPage() {
     .limit(50)
 
   return (
-    <div className="max-w-[780px] mx-auto px-12 py-16">
+    <div className="max-w-[780px] mx-auto px-6 md:px-12 py-10 md:py-16">
       <RevealSection>
         <div className="text-[11px] tracking-[3px] uppercase text-primary mb-4">Global Standings</div>
       </RevealSection>
@@ -25,10 +25,12 @@ export default async function LeaderboardPage() {
       </RevealSection>
 
       <RevealSection delay={160}>
-        {/* Header */}
-        <div className="grid grid-cols-[48px_1fr_120px_100px] pb-3 border-b border-foreground/[0.08] text-[10px] tracking-[2px] uppercase text-muted mb-1">
-          <span>#</span><span>Runner</span><span>XP</span><span>Tier</span>
-        </div>
+        <div className="w-full overflow-x-auto pb-4">
+          <div className="min-w-[500px]">
+            {/* Header */}
+            <div className="grid grid-cols-[48px_1fr_120px_100px] pb-3 border-b border-foreground/[0.08] text-[10px] tracking-[2px] uppercase text-muted mb-1">
+              <span>#</span><span>Runner</span><span>XP</span><span>Tier</span>
+            </div>
 
         {(!leaders || leaders.length === 0) ? (
           <div className="text-center py-16 text-muted border border-dashed border-foreground/[0.12] mt-4">
@@ -65,6 +67,8 @@ export default async function LeaderboardPage() {
             )
           })
         )}
+          </div>
+        </div>
       </RevealSection>
     </div>
   )

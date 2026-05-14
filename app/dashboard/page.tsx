@@ -34,16 +34,16 @@ export default async function DashboardPage() {
   const totalRuns = profile.runs?.length || 0
 
   return (
-    <div className="max-w-5xl mx-auto px-12 py-16">
+    <div className="max-w-5xl mx-auto px-6 md:px-12 py-10 md:py-16">
       {/* Header */}
-      <div className="mb-12 flex items-center justify-between">
+      <div className="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="font-heading text-[clamp(36px,5vw,56px)] leading-none tracking-tight text-foreground mb-1">
+          <h1 className="font-heading text-[clamp(36px,5vw,56px)] leading-tight tracking-tight text-foreground mb-1">
             Welcome back, <span className="text-primary">{profile.name.split(' ')[0]}</span>
           </h1>
           <p className="text-sm text-muted mt-2">Here&apos;s your latest training data.</p>
         </div>
-        <div className="text-right">
+        <div className="md:text-right flex flex-col items-start md:items-end">
           <div className="text-[10px] font-medium tracking-[2px] uppercase text-muted mb-1">Current Tier</div>
           <div className="font-heading text-3xl text-primary uppercase">{profile.tier || 'Jogger'}</div>
         </div>
@@ -71,10 +71,10 @@ export default async function DashboardPage() {
       <div className="text-[11px] tracking-[3px] uppercase text-primary mb-4">Recent Activities</div>
       <h2 className="font-heading text-[clamp(28px,3vw,42px)] leading-none tracking-tight text-foreground mb-8 border-b border-foreground/[0.08] pb-4">Your Runs</h2>
 
-      <div className="space-y-0">
+      <div className="space-y-4">
         {profile.runs?.sort((a: any, b: any) => new Date(b.start_time).getTime() - new Date(a.start_time).getTime()).slice(0, 5).map((run: any) => (
-          <div key={run.id} className="group grid grid-cols-[1fr_120px_120px] items-center py-5 border-b border-foreground/[0.05] relative hover:bg-off transition-colors px-4 -mx-4">
-            <div className="flex items-center gap-4">
+          <div key={run.id} className="group grid grid-cols-2 md:grid-cols-[1fr_120px_120px] items-center py-5 border-b border-foreground/[0.05] relative hover:bg-off transition-colors px-4 -mx-4 gap-y-4 md:gap-y-0">
+            <div className="flex items-center gap-4 col-span-2 md:col-span-1">
               <div className="bg-primary-pale p-3 rounded-full">
                 <Activity className="h-4 w-4 text-primary" />
               </div>
@@ -83,11 +83,11 @@ export default async function DashboardPage() {
                 <div className="text-[10px] tracking-[1.5px] uppercase text-muted mt-0.5">+{run.xp_earned} XP</div>
               </div>
             </div>
-            <div>
+            <div className="pl-12 md:pl-0">
               <div className="text-[10px] tracking-[1.5px] uppercase text-muted">Distance</div>
               <div className="text-[15px] font-light">{Number(run.distance_km).toFixed(2)} km</div>
             </div>
-            <div>
+            <div className="pl-4 md:pl-0">
               <div className="text-[10px] tracking-[1.5px] uppercase text-muted">Pace</div>
               <div className="text-[15px] font-light">{Math.floor(run.pace_per_km)}:{(Math.floor((run.pace_per_km % 1) * 60)).toString().padStart(2, '0')} /km</div>
             </div>
