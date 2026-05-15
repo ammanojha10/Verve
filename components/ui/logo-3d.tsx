@@ -18,8 +18,8 @@ export function Logo3D({ className }: { className?: string }) {
     if (!containerRef.current) return
 
     const container = containerRef.current
-    const width = container.clientWidth || 300
-    const height = container.clientHeight || 300
+    const width = container.clientWidth || 32
+    const height = container.clientHeight || 32
 
     // Scene setup
     const scene = new THREE.Scene()
@@ -123,7 +123,7 @@ export function Logo3D({ className }: { className?: string }) {
   return (
     <div
       ref={containerRef}
-      className={cn("w-full h-full min-h-[300px]", className)}
+      className={cn("w-full h-full", className)}
     />
   )
 }

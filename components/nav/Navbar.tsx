@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { useState, useEffect } from 'react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import { Logo3D } from '@/components/ui/logo-3d'
 
 const navItems = [
   { name: 'Leaderboard', href: '/leaderboard' },
@@ -37,9 +38,7 @@ export function Navbar() {
     )}>
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 no-underline group">
-          <div className="w-8 h-8 bg-primary flex items-center justify-center rounded-sm transition-transform group-hover:scale-105">
-             <span className="text-white font-heading text-xl">V</span>
-          </div>
+          <Logo3D className="w-10 h-10 transition-transform group-hover:scale-110 drop-shadow-md" />
           <span className="font-heading text-2xl tracking-[3px] text-foreground">VERVE</span>
         </Link>
         

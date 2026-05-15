@@ -1,36 +1,46 @@
 'use client'
 
+import { useState, useEffect } from 'react'
+import { useTheme } from 'next-themes'
+import { cn } from '@/lib/utils'
+
 import { RevealSection } from '@/components/ui/RevealSection'
 import { Button } from '@/components/ui/Button'
 import { WhatsAppSection } from '@/components/social/WhatsAppSection'
 import { InstagramPreview } from '@/components/social/InstagramPreview'
 import { ShaderAnimation } from '@/components/ui/shader-animation'
-import { Logo3D } from '@/components/ui/logo-3d'
+import { GooeyBackground } from '@/components/ui/gooey-background'
 import { MapPin, Calendar, Users, ArrowRight } from 'lucide-react'
 
 export default function LandingPage() {
+  const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   return (
     <div className="flex-1">
       {/* ── HERO SECTION ── */}
-      <section className="relative px-6 md:px-12 py-20 md:py-32 overflow-hidden bg-black">
-        <ShaderAnimation className="absolute inset-0 z-0 opacity-70" />
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-12 mb-12">
+      <section className={cn("relative px-6 md:px-12 py-20 md:py-32 min-h-screen flex items-center overflow-hidden", mounted && resolvedTheme === 'dark' ? "bg-black" : "bg-transparent")}>
+        {mounted && resolvedTheme === 'dark' ? (
+          <ShaderAnimation className="absolute inset-0 z-0 opacity-70" />
+        ) : (
+          <GooeyBackground />
+        )}
+        <div className="max-w-7xl mx-auto w-full relative z-10">
+          <div className="mb-12">
             <RevealSection>
-              <h1 className="font-heading text-[clamp(60px,12vw,140px)] leading-[0.85] tracking-tight text-white drop-shadow-2xl">
+              <h1 className={cn("font-heading text-[clamp(60px,12vw,140px)] leading-[0.85] tracking-tight drop-shadow-2xl", mounted && resolvedTheme === 'dark' ? "text-white" : "text-foreground")}>
                 VERVE <br />
-                <span className="text-primary italic">RUN CLUB.</span>
+                <span className="text-primary italic drop-shadow-xl">RUN CLUB.</span>
               </h1>
-            </RevealSection>
-            
-            <RevealSection delay={200} className="w-full md:w-1/2 lg:w-1/3 flex justify-center">
-              <Logo3D className="w-[300px] h-[300px] md:w-[400px] md:h-[400px]" />
             </RevealSection>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-end">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-end mt-16">
             <RevealSection delay={150}>
-              <p className="text-xl md:text-2xl font-light text-white/80 leading-relaxed max-w-lg drop-shadow-md">
+              <p className={cn("text-xl md:text-2xl font-light leading-relaxed max-w-lg drop-shadow-sm", mounted && resolvedTheme === 'dark' ? "text-white/80" : "text-foreground/80")}>
                 A community of runners focused on consistency, progress, and local connection. We meet weekly for group runs across the city.
               </p>
             </RevealSection>
