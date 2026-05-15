@@ -69,7 +69,7 @@ export default function LandingPage() {
             </div>
             <h3 className="font-heading text-3xl mb-4">Weekly Schedule</h3>
             <p className="text-foreground/60 font-light leading-relaxed">
-              Weekly group runs every Tuesday evening and Saturday morning, with Sunday sessions as a permanent fixture. Advanced high-intensity runs are available based on member interest.
+              Weekly group runs are held throughout the week, with Sunday sessions as a permanent fixture. Advanced high-intensity runs are available based on member interest.
             </p>
           </RevealSection>
 
