@@ -3,14 +3,17 @@
 import { useEffect, useRef } from "react"
 import * as THREE from "three"
 import { cn } from "@/lib/utils"
+import { useTheme } from "next-themes"
 
 export function Logo3D({ className }: { className?: string }) {
+  const { resolvedTheme } = useTheme()
   const containerRef = useRef<HTMLDivElement>(null)
   const sceneRef = useRef<{
     camera: THREE.PerspectiveCamera
     scene: THREE.Scene
     renderer: THREE.WebGLRenderer
     mesh: THREE.Mesh
+    material: THREE.MeshBasicMaterial
     animationId: number
   } | null>(null)
 
@@ -40,7 +43,7 @@ export function Logo3D({ className }: { className?: string }) {
     // Load Texture
     const textureLoader = new THREE.TextureLoader()
     const material = new THREE.MeshBasicMaterial({ 
-      color: 0xffffff,
+      color: resolvedTheme === 'light' ? 0x000000 : 0xffffff,
       transparent: true,
       side: THREE.DoubleSide
     })
@@ -96,6 +99,7 @@ export function Logo3D({ className }: { className?: string }) {
       scene,
       renderer,
       mesh,
+      material,
       animationId: 0,
     }
 
@@ -118,7 +122,14 @@ export function Logo3D({ className }: { className?: string }) {
         material.dispose()
       }
     }
-  }, [])
+  }, []) // Empty dependency array means scene initializes once
+
+  useEffect(() => {
+    // Update color when theme changes
+    if (sceneRef.current && sceneRef.current.material) {
+      sceneRef.current.material.color.setHex(resolvedTheme === 'light' ? 0x000000 : 0xffffff)
+    }
+  }, [resolvedTheme])
 
   return (
     <div
