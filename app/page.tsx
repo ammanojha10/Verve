@@ -108,7 +108,7 @@ export default function LandingPage() {
               <span className="font-heading text-2xl tracking-[2px]">VERVE</span>
             </div>
             <p className="text-sm text-foreground/40 max-w-xs font-light">
-              Founded 2024. Focused on building the most inclusive and consistent running community in the region.
+              Focused on building the most inclusive and consistent running community in the region.
             </p>
           </div>
           
