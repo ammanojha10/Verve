@@ -11,6 +11,7 @@ import { InstagramPreview } from '@/components/social/InstagramPreview'
 import { ShaderAnimation } from '@/components/ui/shader-animation'
 import { GooeyBackground } from '@/components/ui/gooey-background'
 import { MapPin, Calendar, Users, ArrowRight } from 'lucide-react'
+import { Logo3D } from '@/components/ui/logo-3d'
 
 export default function LandingPage() {
   const { resolvedTheme } = useTheme()
