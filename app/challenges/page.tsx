@@ -56,15 +56,19 @@ export default function ChallengesPage() {
 
       {challenges.map((ch, i) => (
         <RevealSection key={ch.id} delay={160 + i * 80}>
-          <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-9 bg-foreground/[0.02] border border-foreground/[0.08] p-6 md:p-8 mb-4 hover:bg-off transition-colors duration-200">
-            <div className="flex-1">
+          <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-9 bg-foreground/[0.02] border border-foreground/[0.08] p-5 md:p-8 mb-4 hover:bg-off transition-colors duration-200">
+            <div className="flex-1 mb-2 md:mb-0">
               <div className="text-base text-foreground font-medium">{ch.title}</div>
               <div className="text-xs text-foreground/40 mt-0.5">{ch.sub} · Target: {ch.target}</div>
             </div>
-            <div className="flex-[2] h-1 bg-foreground/[0.08] rounded-sm overflow-hidden min-w-[200px]">
-              <div className="h-full bg-gradient-to-r from-primary to-primary-light rounded-sm transition-all duration-1000" style={{ width: `${ch.pct}%` }} />
+            <div className="w-full md:flex-[2] flex items-center gap-4 md:min-w-[200px]">
+              <div className="flex-1 h-1.5 md:h-1 bg-foreground/[0.08] rounded-sm overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-primary to-primary-light rounded-sm transition-all duration-1000" style={{ width: `${ch.pct}%` }} />
+              </div>
+              <div className="font-heading text-[24px] md:text-[28px] text-primary min-w-[50px] text-right">
+                {ch.pct}%
+              </div>
             </div>
-            <div className="font-heading text-[28px] text-primary min-w-[60px] md:text-right">{ch.pct}%</div>
           </div>
         </RevealSection>
       ))}

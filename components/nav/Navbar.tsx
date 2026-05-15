@@ -102,7 +102,7 @@ export function Navbar() {
       {/* Mobile menu */}
       <div
         className={cn(
-          'md:hidden fixed inset-0 top-[64px] bg-background z-50 px-6 py-12 flex flex-col gap-8 transition-transform duration-300 ease-in-out',
+          'md:hidden fixed inset-0 bg-background z-[90] px-6 pt-24 pb-12 flex flex-col gap-6 transition-transform duration-300 ease-in-out overflow-y-auto',
           isOpen ? 'translate-x-0' : 'translate-x-full'
         )}
       >
@@ -111,18 +111,20 @@ export function Navbar() {
             key={item.href}
             href={item.href}
             onClick={() => setIsOpen(false)}
-            className="font-heading text-5xl tracking-[2px] uppercase text-foreground no-underline"
+            className="font-heading text-4xl tracking-[2px] uppercase text-foreground no-underline"
           >
             {item.name}
           </Link>
         ))}
-        <Link
-          href={isLoggedIn ? '/dashboard' : '/join'}
-          onClick={() => setIsOpen(false)}
-          className="font-heading text-5xl tracking-[2px] uppercase text-primary no-underline"
-        >
-          {isLoggedIn ? 'Dashboard' : 'Join Club'}
-        </Link>
+        <div className="mt-auto">
+          <Link
+            href={isLoggedIn ? '/dashboard' : '/join'}
+            onClick={() => setIsOpen(false)}
+            className="inline-block font-heading text-4xl tracking-[2px] uppercase text-primary no-underline"
+          >
+            {isLoggedIn ? 'Dashboard' : 'Join Club'}
+          </Link>
+        </div>
       </div>
     </header>
   );
