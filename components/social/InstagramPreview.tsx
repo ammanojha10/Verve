@@ -6,12 +6,12 @@ import { useEffect } from 'react'
 
 // REPLACE THESE URLs with the actual post URLs from @verve.runclub
 const INSTAGRAM_POSTS = [
-  'https://www.instagram.com/p/C-vT6Hzy5v2/', // Example placeholder
-  'https://www.instagram.com/p/C-vT6Hzy5v2/', // Example placeholder
-  'https://www.instagram.com/p/C-vT6Hzy5v2/', // Example placeholder
-  'https://www.instagram.com/p/C-vT6Hzy5v2/', // Example placeholder
-  'https://www.instagram.com/p/C-vT6Hzy5v2/', // Example placeholder
-  'https://www.instagram.com/p/C-vT6Hzy5v2/', // Example placeholder
+  'https://www.instagram.com/reel/DWlIvoTEUIU/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==', // Example placeholder
+  'https://www.instagram.com/p/DWVxJ1tEcuc/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==', // Example placeholder
+  'https://www.instagram.com/p/DWBA6kDEXbB/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==', // Example placeholder
+  'https://www.instagram.com/reel/DWLeQajEX97/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==', // Example placeholder
+  'https://www.instagram.com/p/DWI7p4TEWQX/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==', // Example placeholder
+  'https://www.instagram.com/p/DVTMtZkk3YO/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==', // Example placeholder
 ]
 
 export function InstagramPreview() {
