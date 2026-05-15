@@ -102,10 +102,8 @@ export default function LandingPage() {
       <footer className="px-6 md:px-12 py-20 bg-background border-t border-foreground/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
           <div className="space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="w-6 h-6 bg-primary rounded-sm" />
-              <span className="font-heading text-2xl tracking-[2px]">VERVE</span>
-            </div>
+            <Logo3D className={cn("w-6 h-6 transition-transform group-hover:scale-110", resolvedTheme === 'light' ? "bg-primary/10 rounded-sm p-1" : "")} />
+                <span className="font-heading text-2xl tracking-[2px]">VERVE</span>
             <p className="text-sm text-foreground/40 max-w-xs font-light">
               Founded 2024. Focused on building the most inclusive and consistent running community in the region.
             </p>
