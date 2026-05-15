@@ -32,9 +32,8 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto w-full relative z-10">
           <div className="mb-12">
             <RevealSection>
-              <h1 className={cn("font-heading text-[clamp(60px,12vw,140px)] leading-[0.85] tracking-tight drop-shadow-2xl", mounted && resolvedTheme === 'dark' ? "text-white" : "text-foreground")}>
-                VERVE <br />
-                <span className="text-primary italic drop-shadow-xl">RUN CLUB.</span>
+              <h1 className="font-heading text-[clamp(60px,12vw,140px)] leading-[0.85] tracking-tight drop-shadow-2xl text-primary">
+                VERVE
               </h1>
             </RevealSection>
           </div>
