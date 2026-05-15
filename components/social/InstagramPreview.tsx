@@ -1,19 +1,35 @@
 'use client'
 
 import { RevealSection } from '@/components/ui/RevealSection'
-import { Camera, Heart, MessageCircle } from 'lucide-react'
+import { Camera } from 'lucide-react'
+import { useEffect } from 'react'
 
-const INSTA_POSTS = [
-  { id: 1, likes: 124, comments: 12, img: 'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=500&q=80' },
-  { id: 2, likes: 89, comments: 5, img: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=500&q=80' },
-  { id: 3, likes: 210, comments: 34, img: 'https://images.unsplash.com/photo-1594882645126-14020914d58d?w=500&q=80' },
-  { id: 4, likes: 156, comments: 18, img: 'https://images.unsplash.com/photo-1538291323976-37dcaafccb12?w=500&q=80' },
-  { id: 5, likes: 92, comments: 7, img: 'https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?w=500&q=80' },
-  { id: 6, likes: 178, comments: 22, img: 'https://images.unsplash.com/photo-1513594335403-99d130386779?w=500&q=80' },
+// REPLACE THESE URLs with the actual post URLs from @verve.runclub
+const INSTAGRAM_POSTS = [
+  'https://www.instagram.com/p/C-vT6Hzy5v2/', // Example placeholder
+  'https://www.instagram.com/p/C-vT6Hzy5v2/', // Example placeholder
+  'https://www.instagram.com/p/C-vT6Hzy5v2/', // Example placeholder
+  'https://www.instagram.com/p/C-vT6Hzy5v2/', // Example placeholder
+  'https://www.instagram.com/p/C-vT6Hzy5v2/', // Example placeholder
+  'https://www.instagram.com/p/C-vT6Hzy5v2/', // Example placeholder
 ]
 
 export function InstagramPreview() {
   const instaUrl = "https://www.instagram.com/verve.runclub/"
+
+  useEffect(() => {
+    // Dynamically load the Instagram embed script on mount
+    const script = document.createElement('script')
+    script.src = "//www.instagram.com/embed.js"
+    script.async = true
+    document.body.appendChild(script)
+
+    return () => {
+      if (document.body.contains(script)) {
+        document.body.removeChild(script)
+      }
+    }
+  }, [])
 
   return (
     <section className="py-16 md:py-24 px-6 md:px-12 bg-off">
@@ -35,31 +51,17 @@ export function InstagramPreview() {
         </RevealSection>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
-        {INSTA_POSTS.map((post, i) => (
-          <RevealSection key={post.id} delay={i * 50}>
-            <a 
-              href={instaUrl} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="relative aspect-square block group overflow-hidden"
-            >
-              <img 
-                src={post.img} 
-                alt={`Verve Instagram Post ${post.id}`}
-                className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500"
-              />
-              <div className="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 text-white">
-                <div className="flex items-center gap-1.5 text-sm font-medium">
-                  <Heart className="h-4 w-4 fill-white" />
-                  {post.likes}
-                </div>
-                <div className="flex items-center gap-1.5 text-sm font-medium">
-                  <MessageCircle className="h-4 w-4 fill-white" />
-                  {post.comments}
-                </div>
-              </div>
-            </a>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        {INSTAGRAM_POSTS.map((url, i) => (
+          <RevealSection key={i} delay={i * 100}>
+            <div className="w-full flex justify-center bg-white rounded-md overflow-hidden border border-foreground/5 shadow-sm">
+              <blockquote 
+                className="instagram-media w-full" 
+                data-instgrm-permalink={url} 
+                data-instgrm-version="14"
+                style={{ background: '#FFF', border: 0, margin: 0, padding: 0, width: '100%' }}
+              ></blockquote>
+            </div>
           </RevealSection>
         ))}
       </div>
