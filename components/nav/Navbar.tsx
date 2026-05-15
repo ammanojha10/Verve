@@ -30,10 +30,6 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [pathname]);
 
-  const logoContainerClass = cn(
-    'transition-transform group-hover:scale-110 drop-shadow-md',
-    resolvedTheme === 'light' ? 'bg-primary/10 rounded-sm p-1' : ''
-  );
 
   return (
     <header
@@ -45,9 +41,7 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 no-underline group">
-          <div className={logoContainerClass}>
-            <Logo3D className="w-10 h-10" />
-          </div>
+          <Logo3D className="w-10 h-10 transition-transform group-hover:scale-110 drop-shadow-md" />
           <span className="font-heading text-2xl tracking-[3px] text-foreground">
             VERVE
           </span>
