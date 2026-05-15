@@ -2,8 +2,9 @@
 
 import { useEffect, useRef } from "react"
 import * as THREE from "three"
+import { cn } from "@/lib/utils"
 
-export function ShaderAnimation() {
+export function ShaderAnimation({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const sceneRef = useRef<{
     camera: THREE.Camera
@@ -71,7 +72,7 @@ export function ShaderAnimation() {
     const mesh = new THREE.Mesh(geometry, material)
     scene.add(mesh)
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true })
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }) // Added alpha for transparency
     renderer.setPixelRatio(window.devicePixelRatio)
 
     container.appendChild(renderer.domElement)
@@ -133,9 +134,8 @@ export function ShaderAnimation() {
   return (
     <div
       ref={containerRef}
-      className="w-full h-screen"
+      className={cn("w-full h-screen", className)}
       style={{
-        background: "#000",
         overflow: "hidden",
       }}
     />

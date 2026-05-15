@@ -4,24 +4,33 @@ import { RevealSection } from '@/components/ui/RevealSection'
 import { Button } from '@/components/ui/Button'
 import { WhatsAppSection } from '@/components/social/WhatsAppSection'
 import { InstagramPreview } from '@/components/social/InstagramPreview'
+import { ShaderAnimation } from '@/components/ui/shader-animation'
+import { Logo3D } from '@/components/ui/logo-3d'
 import { MapPin, Calendar, Users, ArrowRight } from 'lucide-react'
 
 export default function LandingPage() {
   return (
     <div className="flex-1">
       {/* ── HERO SECTION ── */}
-      <section className="px-6 md:px-12 py-20 md:py-32 bg-background">
-        <div className="max-w-7xl mx-auto">
-          <RevealSection>
-            <h1 className="font-heading text-[clamp(60px,12vw,140px)] leading-[0.85] tracking-tight text-foreground mb-12">
-              VERVE <br />
-              <span className="text-primary italic">RUN CLUB.</span>
-            </h1>
-          </RevealSection>
+      <section className="relative px-6 md:px-12 py-20 md:py-32 overflow-hidden bg-black">
+        <ShaderAnimation className="absolute inset-0 z-0 opacity-70" />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-12 mb-12">
+            <RevealSection>
+              <h1 className="font-heading text-[clamp(60px,12vw,140px)] leading-[0.85] tracking-tight text-white drop-shadow-2xl">
+                VERVE <br />
+                <span className="text-primary italic">RUN CLUB.</span>
+              </h1>
+            </RevealSection>
+            
+            <RevealSection delay={200} className="w-full md:w-1/2 lg:w-1/3 flex justify-center">
+              <Logo3D className="w-[300px] h-[300px] md:w-[400px] md:h-[400px]" />
+            </RevealSection>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-end">
             <RevealSection delay={150}>
-              <p className="text-xl md:text-2xl font-light text-foreground/60 leading-relaxed max-w-lg">
+              <p className="text-xl md:text-2xl font-light text-white/80 leading-relaxed max-w-lg drop-shadow-md">
                 A community of runners focused on consistency, progress, and local connection. We meet weekly for group runs across the city.
               </p>
             </RevealSection>
