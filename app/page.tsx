@@ -24,11 +24,10 @@ export default function LandingPage() {
     <div className="flex-1">
       {/* ── HERO SECTION ── */}
       <section className={cn("relative px-6 md:px-12 py-20 md:py-32 min-h-screen flex items-center overflow-hidden", mounted && resolvedTheme === 'dark' ? "bg-black" : "bg-transparent")}>
-        {mounted && resolvedTheme === 'dark' ? (
-          <ShaderAnimation className="absolute inset-0 z-0 opacity-70" />
-        ) : (
-          <GooeyBackground />
-        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent"></div>
+        <div className="absolute right-[-20%] md:right-[-10%] top-1/2 -translate-y-1/2 w-[120vw] md:w-[80vw] max-w-[800px] aspect-square opacity-10 pointer-events-none">
+          <Logo3D className="w-full h-full" />
+        </div>
         <div className="max-w-7xl mx-auto w-full relative z-10">
           <div className="mb-12">
             <RevealSection>
@@ -57,6 +56,27 @@ export default function LandingPage() {
               </Button>
             </RevealSection>
           </div>
+        </div>
+      </section>
+
+      {/* ── CORE VALUES ── */}
+      <section className="py-16 md:py-24 px-6 md:px-12 bg-foreground text-background">
+        <RevealSection>
+          <div className="text-[11px] tracking-[3px] uppercase text-primary mb-12 text-center">Core Values</div>
+        </RevealSection>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+          <RevealSection delay={100} className="text-center md:text-left">
+            <h3 className="font-heading text-3xl mb-4 text-primary">Legacy</h3>
+            <p className="text-sm font-light leading-relaxed text-background/60">We run for the version of ourselves that will exist in 20 years. Every km is a deposit into your future health.</p>
+          </RevealSection>
+          <RevealSection delay={200} className="text-center md:text-left">
+            <h3 className="font-heading text-3xl mb-4 text-primary">Accessibility</h3>
+            <p className="text-sm font-light leading-relaxed text-background/60">From sub-20 5K runners to those just starting their journey—Verve is built to be accessible and encouraging for all levels.</p>
+          </RevealSection>
+          <RevealSection delay={300} className="text-center md:text-left">
+            <h3 className="font-heading text-3xl mb-4 text-primary">Consistency</h3>
+            <p className="text-sm font-light leading-relaxed text-background/60">We value the streak over the speed. Showing up day after day is what builds a true athlete.</p>
+          </RevealSection>
         </div>
       </section>
 
