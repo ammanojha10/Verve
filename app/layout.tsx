@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${bebas.variable} ${dmSans.variable} font-sans antialiased bg-background text-foreground min-h-screen flex flex-col`}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <Cursor />
           <Navbar />
           <main className="flex-1 flex flex-col pt-[86px]">
