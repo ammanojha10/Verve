@@ -24,10 +24,11 @@ export default function LandingPage() {
     <div className="flex-1">
       {/* ── HERO SECTION ── */}
       <section className={cn("relative px-6 md:px-12 py-20 md:py-32 min-h-screen flex items-center overflow-hidden", mounted && resolvedTheme === 'dark' ? "bg-black" : "bg-transparent")}>
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent"></div>
-        <div className="absolute right-[-20%] md:right-[-10%] top-1/2 -translate-y-1/2 w-[120vw] md:w-[80vw] max-w-[800px] aspect-square opacity-10 pointer-events-none">
-          <Logo3D className="w-full h-full" />
-        </div>
+        {mounted && resolvedTheme === 'dark' ? (
+          <ShaderAnimation className="absolute inset-0 z-0 opacity-70" />
+        ) : (
+          <GooeyBackground />
+        )}
         <div className="max-w-7xl mx-auto w-full relative z-10">
           <div className="mb-12">
             <RevealSection>
