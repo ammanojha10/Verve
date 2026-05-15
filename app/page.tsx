@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
 
@@ -12,10 +12,12 @@ import { ShaderAnimation } from '@/components/ui/shader-animation'
 import { GooeyBackground } from '@/components/ui/gooey-background'
 import { MapPin, Calendar, Users, ArrowRight } from 'lucide-react'
 import { Logo3D } from '@/components/ui/logo-3d'
+import TextCursorProximity from '@/components/ui/text-cursor-proximity'
 
 export default function LandingPage() {
   const { resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const containerRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -23,7 +25,7 @@ export default function LandingPage() {
   return (
     <div className="flex-1">
       {/* ── HERO SECTION ── */}
-      <section className={cn("relative px-6 md:px-12 py-20 md:py-32 min-h-screen flex items-center overflow-hidden", mounted && resolvedTheme === 'dark' ? "bg-black" : "bg-transparent")}>
+      <section ref={containerRef} className={cn("relative px-6 md:px-12 py-20 md:py-32 min-h-screen flex items-center overflow-hidden", mounted && resolvedTheme === 'dark' ? "bg-black" : "bg-transparent")}>
         {mounted && resolvedTheme === 'dark' ? (
           <ShaderAnimation className="absolute inset-0 z-0 opacity-70" />
         ) : (
@@ -33,7 +35,18 @@ export default function LandingPage() {
           <div className="mb-12">
             <RevealSection>
               <h1 className="font-heading text-[clamp(60px,12vw,140px)] leading-[0.85] tracking-tight drop-shadow-2xl text-primary">
-                VERVE
+                <TextCursorProximity
+                  label="VERVE"
+                  containerRef={containerRef as React.RefObject<HTMLDivElement>}
+                  styles={{
+                    transform: {
+                      from: "scale(1) translateY(0px)",
+                      to: "scale(1.2) translateY(-10px)"
+                    }
+                  }}
+                  radius={120}
+                  falloff="gaussian"
+                />
               </h1>
             </RevealSection>
           </div>
