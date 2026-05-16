@@ -69,6 +69,11 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
             } else if (event.data === window.YT.PlayerState.PAUSED || event.data === window.YT.PlayerState.ENDED) {
               setIsPlaying(false)
             }
+          },
+          onError: (event: any) => {
+            console.warn('[AudioProvider] YouTube Player Error - Audio disabled:', event.data)
+            setIsPlaying(false)
+            setIsReady(false) // Disables the toggle functionality
           }
         },
       })
