@@ -25,35 +25,30 @@ export default function AboutPage() {
       </section>
 
       {/* The Story */}
-      <section className="py-16 md:py-24 px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
-        <div>
+      <section className="py-20 md:py-32 px-6 md:px-12 bg-foreground/[0.02]">
+        <div className="max-w-4xl mx-auto">
           <RevealSection>
-            <h2 className="font-heading text-[42px] md:text-[56px] leading-none tracking-tight text-foreground mb-8">The Story</h2>
+            <h2 className="font-heading text-[42px] md:text-[56px] leading-none tracking-tight text-foreground mb-12">The Story</h2>
           </RevealSection>
-          <div className="space-y-6 text-[15px] font-light leading-relaxed text-foreground/65">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 text-[15px] font-light leading-relaxed text-foreground/70">
             <RevealSection delay={100}>
               <p>
                 It started with a simple idea: how can we make running more interactive? Most run clubs focus either on elite athletes or social gatherings. Verve sits right in the middle—a tech-enabled community where your Strava data transforms into XP, levels, and badges.
               </p>
             </RevealSection>
-            <RevealSection delay={200}>
-              <p>
-                We wanted to create a "Legacy of Longevity." Something that isn't just about the next race, but about the thousands of small runs in between. By gamifying the experience, we've seen runners go from 5km a month to 50km, motivated by the leaderboard and the community.
-              </p>
-            </RevealSection>
-            <RevealSection delay={300}>
-              <p>
-                Today, Verve is the fastest-growing running community at KIIT, with over 100 active members logging runs daily.
-              </p>
-            </RevealSection>
+            <div className="space-y-6">
+              <RevealSection delay={200}>
+                <p>
+                  We wanted to create a "Legacy of Longevity." Something that isn't just about the next race, but about the thousands of small runs in between. By gamifying the experience, we've seen runners go from 5km a month to 50km, motivated by the leaderboard and the community.
+                </p>
+              </RevealSection>
+              <RevealSection delay={300}>
+                <p className="text-primary font-medium">
+                  Today, Verve is the fastest-growing running community at KIIT, with over 100 active members logging runs daily.
+                </p>
+              </RevealSection>
+            </div>
           </div>
-        </div>
-        <div className="relative aspect-square bg-foreground/[0.03] dark:bg-foreground/[0.08] overflow-hidden rounded-sm group flex items-center justify-center">
-          <img 
-            src="/logo.png" 
-            alt="Verve Culture" 
-            className="w-full h-full object-contain p-8 sm:p-12 md:p-16 lg:p-24 opacity-25 dark:opacity-40 transition-all duration-700 group-hover:scale-105 group-hover:opacity-50 select-none pointer-events-none"
-          />
         </div>
       </section>
 
