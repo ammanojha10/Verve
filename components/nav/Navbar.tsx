@@ -6,6 +6,8 @@ import { cn } from '@/lib/utils';
 import { useState, useEffect, useCallback } from 'react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { Logo3D } from '@/components/ui/logo-3d';
+import { useBackgroundMusic } from '@/components/AudioProvider';
+import { Volume2, VolumeX } from 'lucide-react';
 
 const navItems = [
   { name: 'Leaderboard', href: '/leaderboard' },
@@ -19,6 +21,7 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { isPlaying, toggleMusic } = useBackgroundMusic();
 
   const closeMenu = useCallback(() => setIsOpen(false), []);
 
@@ -87,7 +90,16 @@ export function Navbar() {
               );
             })}
             <div className="h-4 w-[1px] bg-foreground/10 mx-2" />
-            <ThemeToggle />
+            <div className="flex items-center gap-1">
+              <button 
+                onClick={toggleMusic}
+                className="rounded-full w-9 h-9 flex items-center justify-center hover:bg-foreground/5 text-foreground transition-colors"
+                aria-label={isPlaying ? "Mute music" : "Play music"}
+              >
+                {isPlaying ? <Volume2 className="h-[1.2rem] w-[1.2rem]" /> : <VolumeX className="h-[1.2rem] w-[1.2rem] opacity-50" />}
+              </button>
+              <ThemeToggle />
+            </div>
             <Link
               href={isLoggedIn ? '/dashboard' : '/join'}
               className={cn(
@@ -102,7 +114,14 @@ export function Navbar() {
           </nav>
 
           {/* Mobile controls */}
-          <div className="flex items-center gap-3 md:hidden">
+          <div className="flex items-center gap-1 md:hidden">
+            <button 
+              onClick={toggleMusic}
+              className="rounded-full w-9 h-9 flex items-center justify-center hover:bg-foreground/5 text-foreground transition-colors"
+              aria-label={isPlaying ? "Mute music" : "Play music"}
+            >
+              {isPlaying ? <Volume2 className="h-[1.2rem] w-[1.2rem]" /> : <VolumeX className="h-[1.2rem] w-[1.2rem] opacity-50" />}
+            </button>
             <ThemeToggle />
             <button
               type="button"

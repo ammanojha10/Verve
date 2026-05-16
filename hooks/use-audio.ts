@@ -1,67 +1,76 @@
 'use client'
 
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef, useEffect } from 'react'
 
 export function useAudio() {
-  const audioCtxRef = useRef<AudioContext | null>(null)
+  const hoverAudioRef = useRef<HTMLAudioElement | null>(null)
+  const clickAudioRef = useRef<HTMLAudioElement | null>(null)
+  const themeAudioRef = useRef<HTMLAudioElement | null>(null)
 
-  const initAudio = () => {
-    if (!audioCtxRef.current) {
-      audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)()
+  const lastHoverTime = useRef(0)
+  const lastClickTime = useRef(0)
+
+  // Preload audio on mount (client side only)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      hoverAudioRef.current = new Audio('/sounds/button_sound.mp3')
+      hoverAudioRef.current.volume = 0.15
+      hoverAudioRef.current.playbackRate = 2.0 // Higher pitch/shorter for hover
+      hoverAudioRef.current.preload = 'auto'
+
+      clickAudioRef.current = new Audio('/sounds/button_sound.mp3')
+      clickAudioRef.current.volume = 0.3
+      clickAudioRef.current.playbackRate = 1.0 // Normal for click
+      clickAudioRef.current.preload = 'auto'
+
+      themeAudioRef.current = new Audio('/sounds/button_sound.mp3')
+      themeAudioRef.current.volume = 0.2
+      themeAudioRef.current.playbackRate = 0.5 // Deep pitch for theme toggle
+      themeAudioRef.current.preload = 'auto'
     }
-    if (audioCtxRef.current.state === 'suspended') {
-      audioCtxRef.current.resume()
-    }
-    return audioCtxRef.current
-  }
+  }, [])
 
   const playHover = useCallback(() => {
     try {
-      const ctx = initAudio()
-      const osc = ctx.createOscillator()
-      const gainNode = ctx.createGain()
+      const now = Date.now()
+      // Throttle hover sounds to prevent overlapping audio spam
+      if (now - lastHoverTime.current < 80) return 
+      lastHoverTime.current = now
 
-      osc.type = 'sine'
-      osc.frequency.setValueAtTime(600, ctx.currentTime)
-      osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.1)
-
-      gainNode.gain.setValueAtTime(0, ctx.currentTime)
-      gainNode.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 0.02)
-      gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1)
-
-      osc.connect(gainNode)
-      gainNode.connect(ctx.destination)
-
-      osc.start()
-      osc.stop(ctx.currentTime + 0.1)
+      if (hoverAudioRef.current) {
+        hoverAudioRef.current.currentTime = 0
+        hoverAudioRef.current.play().catch(() => {})
+      }
     } catch (e) {
-      // Ignore audio errors (e.g. strict autoplay policies)
+      // Ignore audio errors (e.g., strict autoplay policies)
     }
   }, [])
 
   const playClick = useCallback(() => {
     try {
-      const ctx = initAudio()
-      const osc = ctx.createOscillator()
-      const gainNode = ctx.createGain()
+      const now = Date.now()
+      if (now - lastClickTime.current < 100) return
+      lastClickTime.current = now
 
-      osc.type = 'square'
-      osc.frequency.setValueAtTime(150, ctx.currentTime)
-      osc.frequency.exponentialRampToValueAtTime(50, ctx.currentTime + 0.1)
-
-      gainNode.gain.setValueAtTime(0, ctx.currentTime)
-      gainNode.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.01)
-      gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15)
-
-      osc.connect(gainNode)
-      gainNode.connect(ctx.destination)
-
-      osc.start()
-      osc.stop(ctx.currentTime + 0.15)
+      if (clickAudioRef.current) {
+        clickAudioRef.current.currentTime = 0
+        clickAudioRef.current.play().catch(() => {})
+      }
+    } catch (e) {
+      // Ignore audio errors
+    }
+  }, [])
+  
+  const playThemeToggle = useCallback(() => {
+    try {
+      if (themeAudioRef.current) {
+        themeAudioRef.current.currentTime = 0
+        themeAudioRef.current.play().catch(() => {})
+      }
     } catch (e) {
       // Ignore audio errors
     }
   }, [])
 
-  return { playHover, playClick }
+  return { playHover, playClick, playThemeToggle }
 }

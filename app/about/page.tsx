@@ -48,13 +48,13 @@ export default function AboutPage() {
             </RevealSection>
           </div>
         </div>
-        <div className="relative aspect-square bg-primary-pale overflow-hidden rounded-sm group">
+        <div className="relative aspect-square bg-foreground/5 dark:bg-foreground/10 overflow-hidden rounded-sm group flex items-center justify-center">
           <img 
             src="/logo.png" 
             alt="Verve Culture" 
-            className="absolute inset-0 w-full h-full object-contain p-20 opacity-20 group-hover:scale-110 transition-transform duration-700"
+            className="absolute inset-0 w-full h-full object-contain p-16 md:p-24 opacity-60 dark:invert group-hover:scale-110 transition-all duration-700 mix-blend-multiply dark:mix-blend-screen"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent pointer-events-none" />
         </div>
       </section>
 

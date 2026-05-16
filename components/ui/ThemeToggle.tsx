@@ -4,9 +4,11 @@ import * as React from 'react'
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { Button } from '@/components/ui/Button'
+import { useAudio } from '@/hooks/use-audio'
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme()
+  const { playThemeToggle } = useAudio()
   const [mounted, setMounted] = React.useState(false)
 
   React.useEffect(() => {
@@ -17,11 +19,16 @@ export function ThemeToggle() {
     return <div className="w-9 h-9" />
   }
 
+  const handleToggle = () => {
+    playThemeToggle()
+    setTheme(theme === 'dark' ? 'light' : 'dark')
+  }
+
   return (
     <Button
       variant="ghost"
       size="icon"
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      onClick={handleToggle}
       className="rounded-full w-9 h-9 flex items-center justify-center hover:bg-foreground/5"
       aria-label="Toggle theme"
     >

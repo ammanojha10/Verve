@@ -23,6 +23,7 @@ export const metadata: Metadata = {
 }
 
 import { ThemeProvider } from '@/components/theme-provider'
+import { AudioProvider } from '@/components/AudioProvider'
 
 export default function RootLayout({
   children,
@@ -33,12 +34,14 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${bebas.variable} ${dmSans.variable} font-sans antialiased bg-background text-foreground min-h-screen flex flex-col`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-          <Cursor />
-          <Analytics />
-          <Navbar />
-          <main className="flex-1 flex flex-col pt-[86px]">
-            {children}
-          </main>
+          <AudioProvider>
+            <Cursor />
+            <Analytics />
+            <Navbar />
+            <main className="flex-1 flex flex-col pt-[86px]">
+              {children}
+            </main>
+          </AudioProvider>
         </ThemeProvider>
       </body>
     </html>
