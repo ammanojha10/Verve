@@ -64,6 +64,19 @@ export async function backfillActivities({
     return result
   }
 
+  // Get existing activity IDs to prevent duplicate XP logic
+  const { data: existingRuns, error: runsErr } = await supabase
+    .from('runs')
+    .select('strava_activity_id')
+    .eq('user_id', userId)
+    .in('strava_activity_id', activities.map((a: any) => Number(a.id)))
+
+  if (runsErr) {
+    result.errors.push(`Failed to check existing runs: ${runsErr.message}`)
+    return result
+  }
+
+  const existingIds = new Set(existingRuns?.map(r => r.strava_activity_id) || [])
   let totalXp = profile.xp || 0
 
   for (const act of activities) {
@@ -78,10 +91,16 @@ export async function backfillActivities({
       continue
     }
 
+    const activityId = Number(act.id)
+    if (existingIds.has(activityId)) {
+      result.skipped++
+      continue
+    }
+
     const xp = calculateXP(act, profile)
     const runPayload = {
       user_id: userId,
-      strava_activity_id: Number(act.id),
+      strava_activity_id: activityId,
       distance_km: distanceKm,
       duration_seconds: act.moving_time,
       pace_per_km:
@@ -93,19 +112,23 @@ export async function backfillActivities({
       xp_earned: xp,
     }
 
-    // Upsert – conflict on strava_activity_id ensures idempotency
-    const { error: upsertErr } = await supabase
+    const { error: insertErr } = await supabase
       .from('runs')
-      .upsert(runPayload, { onConflict: 'strava_activity_id', ignoreDuplicates: true })
+      .insert(runPayload)
 
-    if (upsertErr) {
-      // Log but don't abort – continue with remaining activities
-      result.errors.push(`Run upsert error (${act.id}): ${upsertErr.message}`)
-      console.error(`[stravaSync] Run upsert error for activity ${act.id}:`, upsertErr.message)
+    if (insertErr) {
+      // If it fails on unique constraint due to race condition, just skip
+      if (insertErr.code === '23505') {
+        result.skipped++
+      } else {
+        result.errors.push(`Run insert error (${act.id}): ${insertErr.message}`)
+        console.error(`[stravaSync] Run insert error for activity ${act.id}:`, insertErr.message)
+      }
     } else {
       result.inserted++
       result.xpGained += xp
       totalXp += xp
+      existingIds.add(activityId)
     }
   }
 
@@ -188,6 +211,18 @@ export async function processSingleActivity({
     return false
   }
 
+  // Check if it already exists to prevent duplicate XP
+  const { data: existingRun } = await supabase
+    .from('runs')
+    .select('id')
+    .eq('strava_activity_id', activityId)
+    .single()
+    
+  if (existingRun) {
+    console.info(`[stravaSync] Activity ${activityId} already processed – skipping`)
+    return true
+  }
+
   const distanceKm = activity.distance / 1000
   const xp = calculateXP(activity, profile)
 
@@ -204,12 +239,13 @@ export async function processSingleActivity({
 
   const { data: run, error: runErr } = await supabase
     .from('runs')
-    .upsert(runPayload, { onConflict: 'strava_activity_id', ignoreDuplicates: false })
+    .insert(runPayload)
     .select()
     .single()
 
   if (runErr) {
-    console.error(`[stravaSync] Run upsert error for activity ${activityId}:`, runErr.message)
+    if (runErr.code === '23505') return true // Ignore race condition duplicate
+    console.error(`[stravaSync] Run insert error for activity ${activityId}:`, runErr.message)
     return false
   }
 

@@ -43,7 +43,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         width: '0',
         videoId: '7-TaFkR6zzs',
         playerVars: {
-          autoplay: 0,
+          autoplay: 1,
           controls: 0,
           start: 267,
           loop: 1,
@@ -55,11 +55,12 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
             event.target.setVolume(20) // subtle volume
             setIsReady(true)
             
-            // Try to play immediately if user preference is 'on'
+            // Try to play immediately unless explicitly turned off
             const pref = localStorage.getItem('verve_music')
-            if (pref === 'on') {
+            if (pref !== 'off') {
               event.target.playVideo()
-              setIsPlaying(true)
+              // We don't set isPlaying here immediately, we wait for onStateChange
+              // because browsers might block the programmatic playVideo call.
             }
           },
           onStateChange: (event: any) => {
@@ -80,15 +81,14 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  // Auto-play on first interaction if no preference is set
+  // Auto-play on first interaction if no preference is set, or if autoplay was blocked
   useEffect(() => {
     const handleInteraction = () => {
       if (isReady && playerRef.current) {
         const musicPref = localStorage.getItem('verve_music')
-        if (!musicPref) {
+        if (musicPref !== 'off' && !isPlaying) {
           playerRef.current.playVideo()
-          setIsPlaying(true)
-          localStorage.setItem('verve_music', 'on')
+          // No need to set isPlaying manually, onStateChange handles it
         }
       }
       document.removeEventListener('click', handleInteraction)
@@ -96,7 +96,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 
     document.addEventListener('click', handleInteraction)
     return () => document.removeEventListener('click', handleInteraction)
-  }, [isReady])
+  }, [isReady, isPlaying])
 
   const toggleMusic = () => {
     if (!playerRef.current || !isReady) return
