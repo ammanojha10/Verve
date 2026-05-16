@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 import { RevealSection } from '@/components/ui/RevealSection'
 
-export const revalidate = 0
+export const revalidate = 60
 
 export default async function LeaderboardPage() {
   const supabase = createClient(
