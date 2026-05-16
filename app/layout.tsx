@@ -3,6 +3,7 @@ import { Bebas_Neue, DM_Sans } from 'next/font/google'
 import './globals.css'
 import { Navbar } from '@/components/nav/Navbar'
 import { Cursor } from '@/components/ui/Cursor'
+import { Analytics } from "@vercel/analytics/next"
 
 const bebas = Bebas_Neue({ 
   weight: '400',
@@ -33,6 +34,7 @@ export default function RootLayout({
       <body className={`${bebas.variable} ${dmSans.variable} font-sans antialiased bg-background text-foreground min-h-screen flex flex-col`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <Cursor />
+          <Analytics />
           <Navbar />
           <main className="flex-1 flex flex-col pt-[86px]">
             {children}
