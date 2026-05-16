@@ -12,7 +12,7 @@ export default async function LeaderboardPage() {
   const { data: leaders } = await supabase
     .from('profiles')
     .select('id, name, xp, tier, avatar_url, is_hidden')
-    .eq('is_hidden', false)
+    .not('is_hidden', 'eq', true)   // show rows where is_hidden = false OR null
     .order('xp', { ascending: false })
     .limit(50)
 
