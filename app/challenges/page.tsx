@@ -23,7 +23,8 @@ export default async function ChallengesPage() {
   try {
     const { data, error } = await supabase
       .from('challenges')
-      .select('*, challenge_participants(*)')
+      .select('*, challenge_participants(*, profiles!inner(is_hidden))')
+      .eq('challenge_participants.profiles.is_hidden', false)
       .order('created_at', { ascending: false })
 
     if (error) throw error

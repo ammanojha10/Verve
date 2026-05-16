@@ -10,6 +10,7 @@ export interface Profile {
   streak_weeks: number
   avatar_url?: string
   role?: 'user' | 'moderator' | 'admin' | 'super_admin'
+  is_hidden?: boolean
   created_at?: string
 }
 

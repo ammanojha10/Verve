@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 
 const navItems = [
   { name: 'System Dashboard', href: '/admin', icon: Activity },
-  { name: 'User Management', href: '/admin/users', icon: Users, disabled: true },
+  { name: 'User Management', href: '/admin/users', icon: Users },
   { name: 'Challenges', href: '/admin/challenges', icon: ShieldAlert, disabled: true },
   { name: 'Analytics', href: '/admin/analytics', icon: BarChart, disabled: true },
   { name: 'Audit Logs', href: '/admin/audit', icon: Database, disabled: true },

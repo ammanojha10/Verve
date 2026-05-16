@@ -1,6 +1,5 @@
-import { getSession } from '@/lib/session'
+import { getSession, SessionUser } from '@/lib/session'
 import { redirect } from 'next/navigation'
-import { NextResponse } from 'next/server'
 
 export async function requireAdminRoute() {
   const session = await getSession()
@@ -16,11 +15,11 @@ export async function requireAdminRoute() {
   return session
 }
 
-export async function requireAdminApi() {
+export async function requireAdminApi(): Promise<SessionUser> {
   const session = await getSession()
   
   if (!session || (session.role !== 'admin' && session.role !== 'super_admin')) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+    throw new Error('Unauthorized')
   }
   
   return session
