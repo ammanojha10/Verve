@@ -23,9 +23,9 @@ export function useAudio() {
       clickAudioRef.current.playbackRate = 1.0 // Normal for click
       clickAudioRef.current.preload = 'auto'
 
-      themeAudioRef.current = new Audio('/sounds/button_sound.mp3')
-      themeAudioRef.current.volume = 0.2
-      themeAudioRef.current.playbackRate = 0.5 // Deep pitch for theme toggle
+      themeAudioRef.current = new Audio('/sounds/lightdarktoggle.mp3')
+      themeAudioRef.current.volume = 0.4
+      themeAudioRef.current.playbackRate = 1.0 
       themeAudioRef.current.preload = 'auto'
     }
   }, [])
