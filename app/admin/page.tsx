@@ -121,12 +121,22 @@ export default function AdminDashboard() {
             </h3>
           </div>
           <p className="text-sm text-white/50 mb-6">Trigger a background job to sync missing runs for all athletes.</p>
-          <button 
-            disabled={true}
-            className="w-full bg-white/5 text-white/30 text-sm py-2 rounded-md cursor-not-allowed"
-          >
-            Coming Soon (Phase 2)
-          </button>
+          <div className="flex gap-3">
+            <button 
+              onClick={() => handleAction('/api/admin/global-resync', true)}
+              disabled={loading}
+              className="flex-1 bg-white/5 hover:bg-white/10 text-white text-sm py-2 rounded-md transition-colors"
+            >
+              Dry Run
+            </button>
+            <button 
+              onClick={() => handleAction('/api/admin/global-resync', false)}
+              disabled={loading}
+              className="flex-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 border border-blue-500/30 text-sm py-2 rounded-md transition-colors"
+            >
+              Execute
+            </button>
+          </div>
         </div>
 
       </div>
