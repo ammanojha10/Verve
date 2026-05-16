@@ -1,71 +1,68 @@
-import { createServerClient } from '@/lib/supabase/server'
-import { calculateXP, getTier } from '@/lib/xp'
-import { checkBadges } from '@/lib/badges'
-import { fetchStravaActivity, refreshTokenIfNeeded } from '@/lib/strava'
+import { NextResponse, after } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
+import { processSingleActivity } from '@/lib/stravaSync'
 
+function makeSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+}
+
+/**
+ * GET – Strava webhook subscription verification.
+ * Strava sends hub.verify_token and hub.challenge; we echo the challenge.
+ */
 export async function GET(req: Request) {
-  // Strava subscription verification
   const { searchParams } = new URL(req.url)
-  if (searchParams.get('hub.verify_token') !== process.env.STRAVA_VERIFY_TOKEN) {
-    return Response.json({ error: 'Forbidden' }, { status: 403 })
+  const verifyToken = searchParams.get('hub.verify_token')
+  const challenge = searchParams.get('hub.challenge')
+
+  console.info('[webhook] Verification request received, verify_token match:', verifyToken === process.env.STRAVA_VERIFY_TOKEN)
+
+  if (verifyToken !== process.env.STRAVA_VERIFY_TOKEN) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
-  return Response.json({ 'hub.challenge': searchParams.get('hub.challenge') })
+
+  return NextResponse.json({ 'hub.challenge': challenge })
 }
 
+/**
+ * POST – Strava sends activity events here.
+ * We MUST respond within 2 seconds; all async work happens inside after().
+ */
 export async function POST(req: Request) {
-  const event = await req.json()
-  
-  // Return 200 immediately — Strava requires < 2s response
-  const response = Response.json({ received: true })
+  let event: any
+  try {
+    event = await req.json()
+  } catch {
+    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
+  }
 
+  console.info('[webhook] Event received:', {
+    object_type: event.object_type,
+    aspect_type: event.aspect_type,
+    object_id: event.object_id,
+    owner_id: event.owner_id,
+  })
+
+  // Only process new activity creation events
   if (event.object_type === 'activity' && event.aspect_type === 'create') {
-    // Process async after returning
-    // Note: In Next.js App Router, to prevent the background task from being killed 
-    // when the response is returned, we would ideally use waitUntil() or an external queue.
-    // We will call it here without awaiting, but deploy environments like Vercel 
-    // might require waitUntil for proper background execution.
-    processActivity(event.owner_id, event.object_id).catch(console.error)
-  }
-  
-  return response
-}
+    const stravaUserId: number = event.owner_id
+    const activityId: number = event.object_id
 
-async function processActivity(stravaId: number, activityId: number) {
-  const supabase = await createServerClient()
-  
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('strava_id', stravaId)
-    .single()
-    
-  if (!profile) return
-
-  const token = await refreshTokenIfNeeded(profile, supabase)
-  const activity = await fetchStravaActivity(activityId, token)
-
-  const xp = calculateXP(activity, profile)
-  
-  const { data: run, error: runError } = await supabase.from('runs').insert({
-    user_id: profile.id,
-    strava_activity_id: activityId,
-    distance_km: activity.distance / 1000,
-    duration_seconds: activity.moving_time,
-    pace_per_km: activity.moving_time / (activity.distance / 1000) / 60,
-    elevation_m: activity.total_elevation_gain,
-    start_time: activity.start_date,
-    xp_earned: xp
-  }).select().single()
-
-  if (runError || !run) {
-    console.error('Error inserting run:', runError)
-    return
+    // Use after() so Vercel keeps the function alive until DB writes complete
+    after(async () => {
+      const supabase = makeSupabase()
+      try {
+        const processed = await processSingleActivity({ supabase, stravaUserId, activityId })
+        console.info('[webhook:after] processSingleActivity result:', processed)
+      } catch (err) {
+        console.error('[webhook:after] processSingleActivity exception:', err)
+      }
+    })
   }
 
-  const newXp = profile.xp + xp
-  await supabase.from('profiles')
-    .update({ xp: newXp, tier: getTier(newXp) })
-    .eq('id', profile.id)
-
-  await checkBadges(profile, run, supabase)
+  // Respond immediately with 200 so Strava doesn't retry
+  return NextResponse.json({ received: true })
 }

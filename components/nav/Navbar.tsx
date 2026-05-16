@@ -40,13 +40,16 @@ export function Navbar() {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
       document.body.style.touchAction = 'none';
     } else {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
       document.body.style.touchAction = '';
     }
     return () => {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
       document.body.style.touchAction = '';
     };
   }, [isOpen]);
@@ -55,7 +58,7 @@ export function Navbar() {
     <>
       <header
         className={cn(
-          'fixed top-0 left-0 right-0 z-[100] transition-all duration-300 border-b',
+          'fixed top-0 left-0 right-0 z-[110] transition-all duration-300 border-b',
           scrolled ? 'bg-background/80 backdrop-blur-md py-3' : 'bg-background py-5',
           'border-foreground/5'
         )}
@@ -102,10 +105,13 @@ export function Navbar() {
           <div className="flex items-center gap-3 md:hidden">
             <ThemeToggle />
             <button
-              className="text-foreground p-2 -mr-2 relative z-[110] touch-manipulation"
+              type="button"
+              className="text-foreground p-2 -mr-2 relative touch-manipulation focus:outline-none"
+              style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' }}
               onClick={() => setIsOpen((v) => !v)}
               aria-label={isOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isOpen}
+              aria-controls="mobile-menu"
             >
               <svg
                 width="24"
@@ -140,6 +146,7 @@ export function Navbar() {
 
       {/* Mobile menu panel */}
       <div
+        id="mobile-menu"
         className={cn(
           'md:hidden fixed top-0 right-0 bottom-0 w-[85vw] max-w-[360px] bg-background z-[105]',
           'flex flex-col px-8 pt-24 pb-12 gap-6',

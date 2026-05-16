@@ -2,6 +2,7 @@ import { getSession } from '@/lib/session'
 import { createClient } from '@supabase/supabase-js'
 import { redirect } from 'next/navigation'
 import { Activity, Route, Timer, Zap } from 'lucide-react'
+import { SyncButton } from '@/components/dashboard/SyncButton'
 
 export default async function DashboardPage({
   searchParams,
@@ -59,9 +60,12 @@ export default async function DashboardPage({
           </h1>
           <p className="text-sm text-muted mt-2">Here&apos;s your latest training data.</p>
         </div>
-        <div className="md:text-right flex flex-col items-start md:items-end">
-          <div className="text-[10px] font-medium tracking-[2px] uppercase text-muted mb-1">Current Tier</div>
-          <div className="font-heading text-3xl text-primary uppercase">{profile.tier || 'Jogger'}</div>
+        <div className="md:text-right flex flex-col items-start md:items-end gap-3">
+          <div>
+            <div className="text-[10px] font-medium tracking-[2px] uppercase text-muted mb-1">Current Tier</div>
+            <div className="font-heading text-3xl text-primary uppercase">{profile.tier || 'Jogger'}</div>
+          </div>
+          <SyncButton />
         </div>
       </div>
 
