@@ -132,11 +132,15 @@ export async function backfillActivities({
     }
   }
 
-  // Update XP + tier in one shot
-  const { error: updateErr } = await supabase
-    .from('profiles')
-    .update({ xp: totalXp, tier: getTier(totalXp) })
-    .eq('id', userId)
+  // Update XP atomically via RPC
+  let updateErr = null
+  if (result.xpGained > 0) {
+    const { error } = await supabase.rpc('increment_xp', { 
+      user_id: userId, 
+      xp_amount: result.xpGained 
+    })
+    updateErr = error
+  }
 
   if (updateErr) {
     result.errors.push(`Profile XP update error: ${updateErr.message}`)
@@ -249,11 +253,12 @@ export async function processSingleActivity({
     return false
   }
 
-  const newXp = (profile.xp || 0) + xp
-  await supabase
-    .from('profiles')
-    .update({ xp: newXp, tier: getTier(newXp) })
-    .eq('id', profile.id)
+  if (xp > 0) {
+    await supabase.rpc('increment_xp', { 
+      user_id: profile.id, 
+      xp_amount: xp 
+    })
+  }
 
   if (run) {
     await checkBadges(profile, run, supabase)

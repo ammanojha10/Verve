@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import { RevealSection } from '@/components/ui/RevealSection'
+import { UserAvatar } from '@/components/ui/UserAvatar'
 
 export const revalidate = 60
 
@@ -48,13 +49,7 @@ export default async function LeaderboardPage() {
                     <div className="absolute -left-12 -right-12 top-0 bottom-0 bg-primary-pale opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none" />
                     <span className={`font-heading text-[22px] relative z-10 ${isTop ? 'text-primary' : 'text-muted'}`}>{rank}</span>
                     <div className="flex items-center gap-3.5 relative z-10">
-                      {profile.avatar_url ? (
-                        <img src={profile.avatar_url} alt={profile.name} className="w-9 h-9 rounded-full flex-shrink-0 object-cover" />
-                      ) : (
-                        <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0 ${index === 0 ? 'bg-[#FEF3C7] text-[#92400E]' : 'bg-primary-pale text-primary-deep'}`}>
-                          {initials}
-                        </div>
-                      )}
+                      <UserAvatar src={profile.avatar_url} alt={profile.name} className="w-9 h-9 rounded-full flex-shrink-0 object-cover" />
                       <div>
                         <div className="text-[15px]">{profile.name}</div>
                         <div className="text-[10px] tracking-[1.5px] uppercase text-muted mt-0.5">{profile.tier || 'Jogger'}</div>
