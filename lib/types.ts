@@ -34,3 +34,24 @@ export interface StravaActivity {
   start_date: string
   workout_type: number
 }
+
+export interface Challenge {
+  id: string
+  name: string
+  description?: string
+  type: 'distance' | 'runs' | 'streak' | 'pace'
+  target: number
+  start_date: string
+  end_date: string
+  created_by?: string
+  created_at: string
+  challenge_participants?: ChallengeParticipant[]
+}
+
+export interface ChallengeParticipant {
+  id: string
+  challenge_id: string
+  user_id: string
+  joined_at: string
+  profiles?: Partial<Profile>
+}

@@ -6,6 +6,7 @@
   --color-primary: #C0392B;
   --color-primary-deep: #922B21;
   --color-primary-pale: #F9EBEA;
+  --color-primary-light: #E74C3C;
   --color-muted: #666666;
   --color-muted-foreground: #1A0A09;
   --color-off: var(--off-bg);

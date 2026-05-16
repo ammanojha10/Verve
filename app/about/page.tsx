@@ -14,7 +14,7 @@ export default function AboutPage() {
         </RevealSection>
         <RevealSection delay={100}>
           <h1 className="font-heading text-[clamp(48px,8vw,90px)] leading-[0.92] tracking-tight text-foreground mb-8">
-            Verve is for <span className="text-primary text-italic">everyone.</span>
+            Verve is for <span className="text-primary italic">everyone.</span>
           </h1>
         </RevealSection>
         <RevealSection delay={200}>
@@ -59,7 +59,7 @@ export default function AboutPage() {
       </section>
 
       {/* Core Values */}
-      <section className="py-16 md:py-24 px-6 md:px-12 bg-foreground text-white">
+      <section className="py-16 md:py-24 px-6 md:px-12 bg-zinc-900 dark:bg-zinc-950 text-white">
         <RevealSection>
           <div className="text-[11px] tracking-[3px] uppercase text-primary-light mb-12 text-center">Core Values</div>
         </RevealSection>
@@ -96,7 +96,7 @@ export default function AboutPage() {
             <Button asChild>
               <Link href="/join">Join the Club</Link>
             </Button>
-            <Button variant="outline" asChild>
+            <Button className="border-foreground/20 text-foreground hover:bg-foreground/5 hover:text-foreground" variant="outline" asChild>
               <Link href="/leaderboard">See the Board</Link>
             </Button>
           </div>
