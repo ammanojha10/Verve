@@ -8,6 +8,21 @@ export async function proxy(request: NextRequest) {
     },
   })
 
+  // 1. Protected routes check
+  const { pathname } = request.nextUrl
+  const protectedRoutes = ['/dashboard', '/profile', '/settings']
+  const isProtected = protectedRoutes.some(route => pathname.startsWith(route))
+
+  if (isProtected) {
+    const userId = request.cookies.get('verve_user_id')?.value
+    if (!userId) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/join'
+      url.searchParams.set('next', pathname)
+      return NextResponse.redirect(url)
+    }
+  }
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
