@@ -9,6 +9,7 @@ export interface Profile {
   tier: string
   streak_weeks: number
   avatar_url?: string
+  role?: 'user' | 'moderator' | 'admin' | 'super_admin'
   created_at?: string
 }
 
@@ -54,4 +55,16 @@ export interface ChallengeParticipant {
   user_id: string
   joined_at: string
   profiles?: Partial<Profile>
+}
+
+export interface AuditLog {
+  id: string
+  admin_id: string
+  admin_name: string
+  action: string
+  target_type: 'user' | 'run' | 'challenge' | 'system'
+  target_id?: string
+  metadata?: any
+  severity: 'info' | 'warning' | 'critical'
+  created_at: string
 }
