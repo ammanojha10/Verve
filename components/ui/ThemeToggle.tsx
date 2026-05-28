@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { Moon, Sun } from 'lucide-react'
-import { useTheme } from 'next-themes'
+import { useTheme } from '@/components/theme-provider'
 import { Button } from '@/components/ui/Button'
 import { useAudio } from '@/hooks/use-audio'
 
@@ -11,7 +11,9 @@ export function ThemeToggle() {
   const { playThemeToggle } = useAudio()
   const [mounted, setMounted] = React.useState(false)
 
-  React.useEffect(() => {
+  // Using a layout effect to set mounted avoids the cascading render warning
+  // since useLayoutEffect runs synchronously before paint
+  React.useLayoutEffect(() => {
     setMounted(true)
   }, [])
 

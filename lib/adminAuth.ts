@@ -34,6 +34,7 @@ export async function logAdminAction(payload: {
   metadata?: any
   severity?: 'info' | 'warning' | 'critical'
 }) {
+
   const { createAdminClient } = await import('@/lib/supabase/admin')
   const supabaseAdmin = createAdminClient()
   

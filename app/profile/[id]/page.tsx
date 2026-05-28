@@ -1,8 +1,10 @@
 import { createClient } from '@supabase/supabase-js'
 import { RevealSection } from '@/components/ui/RevealSection'
 import { Trophy } from 'lucide-react'
+import Image from 'next/image'
 
-export default async function ProfilePage({ params }: { params: { id: string } }) {
+export default async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -11,7 +13,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
   const { data: profile } = await supabase
     .from('profiles')
     .select('*, user_badges(badges(*))')
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (!profile) {
@@ -31,7 +33,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
       {/* Profile Header */}
       <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-16">
         {profile.avatar_url ? (
-          <img src={profile.avatar_url} alt={profile.name} className="w-32 h-32 rounded-full border-4 border-background shadow-xl ring-2 ring-primary/20 object-cover" />
+          <Image src={profile.avatar_url} alt={profile.name} width={128} height={128} className="w-32 h-32 rounded-full border-4 border-background shadow-xl ring-2 ring-primary/20 object-cover" />
         ) : (
           <div className="w-32 h-32 rounded-full bg-primary-pale text-primary-deep flex items-center justify-center text-4xl font-medium border-4 border-background shadow-xl ring-2 ring-primary/20">
             {initials}

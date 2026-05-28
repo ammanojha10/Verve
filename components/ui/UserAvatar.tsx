@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-
+import Image from 'next/image'
 interface UserAvatarProps {
   src?: string | null
   alt: string
@@ -18,11 +18,13 @@ export function UserAvatar({
   const [imgSrc, setImgSrc] = useState<string>(src || fallbackSrc)
 
   return (
-    <img 
+    <Image 
       src={imgSrc} 
       alt={alt} 
       className={className}
       onError={() => setImgSrc(fallbackSrc)}
+      width={40}
+      height={40}
     />
   )
 }

@@ -5,246 +5,118 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useState, useEffect, useCallback } from 'react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
-import { Logo3D } from '@/components/ui/logo-3d';
-import { useBackgroundMusic } from '@/components/AudioProvider';
 import { useAudio } from '@/hooks/use-audio';
-import { Volume2, VolumeX } from 'lucide-react';
 
 const navItems = [
   { name: 'Leaderboard', href: '/leaderboard' },
-  { name: 'About', href: '/about' },
-  { name: 'Gallery', href: '/gallery' },
   { name: 'Challenges', href: '/challenges' },
+  { name: 'Gallery', href: '/gallery' },
+  { name: 'About Us', href: '/about' },
 ];
 
 export function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const { isPlaying, toggleMusic } = useBackgroundMusic();
-  const { playHover, playClick, playThemeToggle } = useAudio();
-
-  const handleToggleMusic = () => {
-    playThemeToggle();
-    toggleMusic();
-  };
+  const { playHover, playClick } = useAudio();
 
   const closeMenu = useCallback(() => setIsOpen(false), []);
 
-  // Close menu on route change
   useEffect(() => {
-    closeMenu();
-  }, [pathname, closeMenu]);
+    setIsOpen(false);
+  }, [pathname]);
 
-  // Scroll listener + login check
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll, { passive: true });
     const logged = document.cookie.split(';').some((i) => i.trim().startsWith('verve_name='));
     setIsLoggedIn(logged);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Lock body scroll when mobile menu is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
-      document.body.style.touchAction = 'none';
-    } else {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-      document.body.style.touchAction = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-      document.body.style.touchAction = '';
-    };
-  }, [isOpen]);
+  }, [pathname]);
 
   return (
     <>
-      <header
-        className={cn(
-          'fixed top-0 left-0 right-0 z-[110] transition-all duration-300 border-b',
-          scrolled ? 'bg-background/80 backdrop-blur-md py-3' : 'bg-background py-5',
-          'border-foreground/5'
-        )}
-      >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-          <Link 
-            href="/" 
-            className="flex items-center gap-3 no-underline group"
-            onClick={playClick}
-            onMouseEnter={playHover}
-          >
-            <Logo3D className="w-10 h-10 transition-transform group-hover:scale-110 drop-shadow-md" />
-            <span className="font-heading text-2xl tracking-[3px] text-foreground">VERVE</span>
-          </Link>
+      <header className="fixed top-0 left-0 right-0 z-[110] bg-background text-foreground py-6 px-8 md:px-16 flex items-start justify-between">
+        {/* Left: Logo */}
+        <Link
+          href="/"
+          className="font-heading text-xl md:text-2xl font-black uppercase tracking-tighter leading-none"
+          onMouseEnter={playHover}
+          onClick={playClick}
+        >
+          VERVE
+        </Link>
 
-          {/* Desktop navigation */}
-          <nav className="hidden md:flex items-center gap-10">
-            {navItems.map((item) => {
-              const isActive = pathname === item.href;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={playClick}
-                  onMouseEnter={playHover}
-                  className={cn(
-                    'text-[11px] tracking-[2px] uppercase no-underline transition-all duration-200 font-bold',
-                    isActive ? 'text-primary' : 'text-foreground/60 hover:text-primary'
-                  )}
-                >
-                  {item.name}
-                </Link>
-              );
-            })}
-            <div className="h-4 w-[1px] bg-foreground/10 mx-2" />
-            <div className="flex items-center gap-1">
-              <button 
-                onClick={handleToggleMusic}
-                onMouseEnter={playHover}
-                className="rounded-full w-9 h-9 flex items-center justify-center hover:bg-foreground/5 text-foreground transition-colors"
-                aria-label={isPlaying ? "Mute music" : "Play music"}
-              >
-                {isPlaying ? <Volume2 className="h-[1.2rem] w-[1.2rem]" /> : <VolumeX className="h-[1.2rem] w-[1.2rem] opacity-50" />}
-              </button>
-              <ThemeToggle />
-            </div>
+        {/* Center: Links */}
+        <nav className="hidden md:flex items-center gap-16 pt-1">
+          {navItems.map((item) => (
             <Link
-              href={isLoggedIn ? '/dashboard' : '/join'}
+              key={item.href}
+              href={item.href}
+              className="text-[9px] tracking-[0.2em] font-bold uppercase hover:opacity-50 transition-opacity"
+              onMouseEnter={playHover}
               onClick={playClick}
-              onMouseEnter={playHover}
-              className={cn(
-                'text-[11px] tracking-[2px] uppercase no-underline transition-all duration-200 font-bold px-6 py-2.5 rounded-full',
-                isLoggedIn
-                  ? 'bg-foreground/5 text-foreground hover:bg-foreground/10'
-                  : 'bg-primary text-white hover:bg-primary-deep shadow-sm'
-              )}
             >
-              {isLoggedIn ? 'Dashboard' : 'Join Club'}
+              {item.name}
             </Link>
-          </nav>
-
-          {/* Mobile controls */}
-          <div className="flex items-center gap-1 md:hidden">
-            <button 
-              onClick={handleToggleMusic}
-              onMouseEnter={playHover}
-              className="rounded-full w-9 h-9 flex items-center justify-center hover:bg-foreground/5 text-foreground transition-colors"
-              aria-label={isPlaying ? "Mute music" : "Play music"}
-            >
-              {isPlaying ? <Volume2 className="h-[1.2rem] w-[1.2rem]" /> : <VolumeX className="h-[1.2rem] w-[1.2rem] opacity-50" />}
-            </button>
-            <ThemeToggle />
-            <button
-              type="button"
-              className="text-foreground p-2 -mr-2 relative touch-manipulation focus:outline-none"
-              style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' }}
-              onClick={() => {
-                playClick();
-                setIsOpen((v) => !v);
-              }}
-              onMouseEnter={playHover}
-              aria-label={isOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={isOpen}
-              aria-controls="mobile-menu"
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                {isOpen ? (
-                  <path d="M18 6L6 18M6 6l12 12" />
-                ) : (
-                  <path d="M3 12h18M3 6h18M3 18h18" />
-                )}
-              </svg>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Mobile menu backdrop */}
-      <div
-        className={cn(
-          'md:hidden fixed inset-0 bg-black/40 z-[95] transition-opacity duration-300',
-          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        )}
-        onClick={closeMenu}
-        aria-hidden="true"
-      />
-
-      {/* Mobile menu panel */}
-      <div
-        id="mobile-menu"
-        className={cn(
-          'md:hidden fixed top-0 right-0 bottom-0 w-[85vw] max-w-[360px] bg-background z-[105]',
-          'flex flex-col px-8 pt-24 pb-12 gap-6',
-          'transition-transform duration-300 ease-in-out overflow-y-auto',
-          'shadow-2xl',
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        )}
-        aria-hidden={!isOpen}
-      >
-        {/* Nav links */}
-        <nav className="flex flex-col gap-5">
-          {navItems.map((item) => {
-            const isActive = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => {
-                  playClick();
-                  closeMenu();
-                }}
-                className={cn(
-                  'font-heading text-[clamp(28px,8vw,36px)] tracking-[2px] uppercase no-underline transition-colors',
-                  isActive ? 'text-primary' : 'text-foreground hover:text-primary'
-                )}
-              >
-                {item.name}
-              </Link>
-            );
-          })}
+          ))}
         </nav>
 
-        {/* CTA */}
-        <div className="mt-auto pt-8 border-t border-foreground/10 flex flex-col gap-4">
+        {/* Right: CTA Button */}
+        <div className="hidden md:flex items-center gap-4">
+          <ThemeToggle />
           <Link
             href={isLoggedIn ? '/dashboard' : '/join'}
-            onClick={() => {
-              playClick();
-              closeMenu();
-            }}
-            className="inline-block font-heading text-[clamp(28px,8vw,36px)] tracking-[2px] uppercase text-primary no-underline"
+            className="bg-[#F9C02D] text-[#000000] text-[9px] font-bold tracking-[0.1em] uppercase px-5 py-2.5 rounded-full hover:bg-[#E6B029] transition-colors"
+            onMouseEnter={playHover}
+            onClick={playClick}
           >
             {isLoggedIn ? 'Dashboard' : 'Join Club'}
           </Link>
-          {isLoggedIn && (
-            <a
-              href="/api/auth/logout"
-              onClick={() => {
-                playClick();
-                closeMenu();
-              }}
-              className="text-[11px] tracking-[2px] uppercase text-muted hover:text-primary transition-colors"
-            >
-              Log out
-            </a>
-          )}
         </div>
+
+        {/* Mobile menu toggle */}
+        <div className="md:hidden flex items-center gap-4">
+          <ThemeToggle />
+          <button
+            className="text-foreground"
+            onClick={() => { playClick(); setIsOpen(!isOpen); }}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              {isOpen ? <path d="M18 6L6 18M6 6l12 12" /> : <path d="M3 12h18M3 6h18M3 18h18" />}
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile menu panel */}
+      <div
+        className={cn(
+          'md:hidden fixed inset-0 bg-background z-[105] flex flex-col items-center justify-center gap-8 transition-transform duration-300',
+          isOpen ? 'translate-y-0' : '-translate-y-full'
+        )}
+      >
+        <button onClick={closeMenu} className="absolute top-6 right-8">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+        {navItems.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            onClick={() => { playClick(); closeMenu(); }}
+            onMouseEnter={playHover}
+            className="text-lg font-bold tracking-[0.2em] uppercase text-foreground"
+          >
+            {item.name}
+          </Link>
+        ))}
+        <Link
+          href={isLoggedIn ? '/dashboard' : '/join'}
+          onClick={() => { playClick(); closeMenu(); }}
+          onMouseEnter={playHover}
+          className="mt-8 bg-[#F9C02D] text-[#000000] text-sm font-bold tracking-[0.1em] uppercase px-8 py-3 rounded-full"
+        >
+          {isLoggedIn ? 'Dashboard' : 'Join Club'}
+        </Link>
       </div>
     </>
   );

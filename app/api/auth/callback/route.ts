@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { getTier } from '@/lib/xp'
 import { backfillActivities } from '@/lib/stravaSync'
+import { getCredentialsForProfile } from '@/lib/strava'
 
 const SESSION_MAX_AGE = 60 * 60 * 24 * 30 // 30 days
 
@@ -28,14 +29,24 @@ export async function GET(request: Request) {
   const url = new URL(request.url)
   const code = url.searchParams.get('code')
   const error = url.searchParams.get('error')
+  const stateClientId = url.searchParams.get('state') // retrieve selected client_id from state parameter
   const appUrl = url.origin
   const isProd = process.env.NODE_ENV === 'production'
 
-  console.info('[auth/callback] Received callback', { hasCode: !!code, error })
+  console.info('[auth/callback] Received callback', { hasCode: !!code, error, stateClientId })
 
   if (error || !code) {
     console.warn('[auth/callback] No code or error param:', { error, code })
     return NextResponse.redirect(`${appUrl}/?error=strava_denied`)
+  }
+
+  // Resolve dynamic credentials based on state client_id
+  let creds;
+  try {
+    creds = getCredentialsForProfile(stateClientId || undefined)
+  } catch (err) {
+    console.error('[auth/callback] Credential resolution failed:', err)
+    return NextResponse.redirect(`${appUrl}/?error=invalid_strava_shard`)
   }
 
   // ── 1. Exchange code for Strava tokens ────────────────────────────────────
@@ -45,8 +56,8 @@ export async function GET(request: Request) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        client_id: process.env.STRAVA_CLIENT_ID,
-        client_secret: process.env.STRAVA_CLIENT_SECRET,
+        client_id: creds.clientId,
+        client_secret: creds.clientSecret,
         code,
         grant_type: 'authorization_code',
         redirect_uri: `${appUrl}/api/auth/callback`,
@@ -140,6 +151,7 @@ export async function GET(request: Request) {
     strava_access_token: access_token,
     strava_refresh_token: refresh_token,
     strava_token_expires_at: expires_at,
+    strava_client_id: creds.clientId, // Store which client was used to register this athlete
     avatar_url: avatarUrl,
     // Preserve XP if profile already existed
     xp: existingProfile?.xp ?? 0,

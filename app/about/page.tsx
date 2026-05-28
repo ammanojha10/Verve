@@ -39,7 +39,7 @@ export default function AboutPage() {
             <div className="space-y-6">
               <RevealSection delay={200}>
                 <p>
-                  We wanted to create a "Legacy of Longevity." Something that isn't just about the next race, but about the thousands of small runs in between. By gamifying the experience, we've seen runners go from 5km a month to 50km, motivated by the leaderboard and the community.
+                  We wanted to create a &quot;Legacy of Longevity.&quot; Something that isn&apos;t just about the next race, but about the thousands of small runs in between. By gamifying the experience, we&apos;ve seen runners go from 5km a month to 50km, motivated by the leaderboard and the community.
                 </p>
               </RevealSection>
               <RevealSection delay={300}>

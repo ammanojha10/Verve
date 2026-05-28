@@ -1,47 +1,36 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: #C0392B;
-  --color-primary-deep: #922B21;
-  --color-primary-pale: #F9EBEA;
-  --color-primary-light: #E74C3C;
-  --color-muted: #666666;
-  --color-muted-foreground: #1A0A09;
-  --color-off: var(--off-bg);
+  --color-background: #EFEFEF;
+  --color-foreground: #000000;
+  --color-primary: #E74431;
+  --color-accent: #F9C02D;
   
-  --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-heading: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-sans: "Helvetica Neue", "Neue Haas Grotesk", Helvetica, Arial, sans-serif;
+  --font-heading: "Helvetica Neue", "Neue Haas Grotesk", Helvetica, Arial, sans-serif;
 }
 
 @layer base {
   :root {
-    --background: #F4F4F5; /* Off-white for light mode */
-    --foreground: #18181B; /* Dark grey for contrast */
-    --off-bg: #E4E4E7;
-    --muted: #71717A;
+    --background: #EFEFEF;
+    --foreground: #000000;
   }
 
   .dark {
-    --background: #09090B; /* Deep black for dark mode */
-    --foreground: #FAFAFA;
-    --off-bg: #18181B;
-    --muted: #A1A1AA;
+    --background: #111111;
+    --foreground: #EFEFEF;
   }
 
   * {
-    border-color: rgba(0,0,0,0.1);
-  }
-  
-  .dark * {
-    border-color: rgba(255,255,255,0.1);
+    border-color: var(--foreground);
   }
 
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
@@ -49,37 +38,12 @@
   .text-balance {
     text-wrap: balance;
   }
-}
 
-/* Transitions */
-.theme-transition {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
+  .tracking-ultra-tight {
+    letter-spacing: -0.06em;
+  }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-up {
-  animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-@keyframes blob {
-  0% { transform: translate(0px, 0px) scale(1); }
-  33% { transform: translate(30px, -50px) scale(1.1); }
-  66% { transform: translate(-20px, 20px) scale(0.9); }
-  100% { transform: translate(0px, 0px) scale(1); }
-}
-
-.animate-blob {
-  animation: blob 7s infinite;
-}
-
-.animation-delay-2000 {
-  animation-delay: 2s;
-}
-
-.animation-delay-4000 {
-  animation-delay: 4s;
+  .leading-ultra-tight {
+    line-height: 0.85;
+  }
 }

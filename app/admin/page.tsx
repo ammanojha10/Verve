@@ -8,10 +8,6 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState<string>('')
 
-  useEffect(() => {
-    fetchLogs()
-  }, [])
-
   const fetchLogs = async () => {
     try {
       const res = await fetch('/api/admin/audit-logs')
@@ -21,6 +17,10 @@ export default function AdminDashboard() {
       console.error(e)
     }
   }
+
+  useEffect(() => {
+    fetchLogs()
+  }, [])
 
   const handleAction = async (endpoint: string, dryRun: boolean) => {
     const isDestructive = !dryRun

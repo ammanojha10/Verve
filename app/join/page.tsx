@@ -80,6 +80,7 @@ export default function JoinPage() {
             </a>
           </Button>
         </RevealSection>
+
       </section>
 
       <InstagramPreview />

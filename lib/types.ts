@@ -5,6 +5,7 @@ export interface Profile {
   strava_access_token?: string
   strava_refresh_token?: string
   strava_token_expires_at?: number
+  strava_client_id?: string
   xp: number
   tier: string
   streak_weeks: number

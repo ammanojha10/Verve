@@ -1,171 +1,186 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { useTheme } from 'next-themes'
-import { cn } from '@/lib/utils'
-
-import { RevealSection } from '@/components/ui/RevealSection'
-import { Button } from '@/components/ui/Button'
 import { WhatsAppSection } from '@/components/social/WhatsAppSection'
 import { InstagramPreview } from '@/components/social/InstagramPreview'
-import { ShaderAnimation } from '@/components/ui/shader-animation'
-import { GooeyBackground } from '@/components/ui/gooey-background'
 import { MapPin, Calendar, Users, ArrowRight } from 'lucide-react'
-import { Logo3D } from '@/components/ui/logo-3d'
-import TextCursorProximity from '@/components/ui/text-cursor-proximity'
+import Link from 'next/link'
+import { useAudio } from '@/hooks/use-audio'
 
 export default function LandingPage() {
-  const { resolvedTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-  const containerRef = useRef<HTMLElement>(null)
+  const { playHover, playClick } = useAudio()
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
   return (
-    <div className="flex-1">
+    <div className="flex-1 min-h-screen font-sans">
+      
       {/* ── HERO SECTION ── */}
-      <section ref={containerRef} className={cn("relative px-6 md:px-12 py-20 md:py-32 min-h-screen flex items-center overflow-hidden", mounted && resolvedTheme === 'dark' ? "bg-black" : "bg-transparent")}>
-        {mounted && resolvedTheme === 'dark' ? (
-          <ShaderAnimation className="absolute inset-0 z-0 opacity-70" />
-        ) : (
-          <GooeyBackground />
-        )}
-        <div className="max-w-7xl mx-auto w-full relative z-10">
-          <div className="mb-12">
-            <RevealSection>
-              <h1 className={cn("font-heading text-[clamp(60px,12vw,140px)] leading-[0.85] tracking-tight drop-shadow-2xl", mounted && resolvedTheme === 'dark' ? "text-white" : "text-primary")}>
-                <TextCursorProximity
-                  label="VERVE"
-                  containerRef={containerRef as React.RefObject<HTMLDivElement>}
-                  styles={{
-                    transform: {
-                      from: "scale(1) translateY(0px)",
-                      to: "scale(1.2) translateY(-10px)"
-                    }
-                  }}
-                  radius={120}
-                  falloff="gaussian"
-                />
-              </h1>
-            </RevealSection>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-end mt-16">
-            <RevealSection delay={150}>
-              <p className={cn("text-xl md:text-2xl font-light leading-relaxed max-w-lg drop-shadow-sm", mounted && resolvedTheme === 'dark' ? "text-white/80" : "text-foreground/80")}>
-                A community of runners focused on consistency, progress, and local connection. We meet weekly for group runs across the city.
-              </p>
-            </RevealSection>
-            
-            <RevealSection delay={300} className="flex gap-4">
-              <Button size="lg" className="rounded-full px-10 py-7 bg-primary text-white hover:bg-primary-deep shadow-lg group" asChild>
-                <a href="/join">
-                  Join the Club <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </a>
-              </Button>
-              <Button size="lg" variant="outline" className="rounded-full px-10 py-7 border-foreground/10 hover:bg-foreground/5 transition-all" asChild>
-                <a href="/about">Our Story</a>
-              </Button>
-            </RevealSection>
+      <section className="pt-32 pb-16 md:pt-44 md:pb-20 px-8 md:px-16 max-w-[1400px] mx-auto">
+        
+
+
+        {/* Massive Typography */}
+        <h1 className="font-heading font-normal tracking-[-0.06em] leading-[0.85] text-[clamp(48px,15vw,220px)] text-center mb-20 md:mb-28">
+          Verve<br />
+          Run Club<br />
+          Network
+        </h1>
+
+        {/* The Red Banner */}
+        <div className="w-full bg-[#E74431] rounded-lg relative px-8 py-14 md:px-14 md:py-20">
+          {/* Corner rivets */}
+          <div className="absolute top-4 left-4 w-2.5 h-2.5 bg-foreground rounded-full" />
+          <div className="absolute top-4 right-4 w-2.5 h-2.5 bg-foreground rounded-full" />
+          <div className="absolute bottom-4 left-4 w-2.5 h-2.5 bg-foreground rounded-full" />
+          <div className="absolute bottom-4 right-4 w-2.5 h-2.5 bg-foreground rounded-full" />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-4">
+            {/* 1 - Legacy */}
+            <div className="flex items-end gap-4">
+              <span className="text-[120px] md:text-[160px] font-heading font-light leading-[0.7] tracking-tighter text-foreground">1</span>
+              <span className="text-sm font-medium tracking-tight mb-3 max-w-[140px] text-foreground">Legacy &<br />Consistency</span>
+            </div>
+
+            {/* 2 - Accessibility */}
+            <div className="flex items-end gap-4 md:justify-center">
+              <span className="text-[120px] md:text-[160px] font-heading font-light leading-[0.7] tracking-tighter text-foreground">2</span>
+              <span className="text-sm font-medium tracking-tight mb-3 max-w-[140px] text-foreground">Accessible to<br />All Levels</span>
+            </div>
+
+            {/* 3 - Community */}
+            <div className="flex items-end gap-4 md:justify-end">
+              <span className="text-[120px] md:text-[160px] font-heading font-light leading-[0.7] tracking-tighter text-foreground">3</span>
+              <span className="text-sm font-medium tracking-tight mb-3 max-w-[140px] text-foreground">Driven by<br />Community</span>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── CORE VALUES ── */}
-      <section className="py-16 md:py-24 px-6 md:px-12 bg-foreground text-background">
-        <RevealSection>
-          <div className="text-[11px] tracking-[3px] uppercase text-primary mb-12 text-center">Core Values</div>
-        </RevealSection>
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
-          <RevealSection delay={100} className="text-center md:text-left">
-            <h3 className="font-heading text-3xl mb-4 text-primary">Legacy</h3>
-            <p className="text-sm font-light leading-relaxed text-background/60">We run for the version of ourselves that will exist in 20 years. Every km is a deposit into your future health.</p>
-          </RevealSection>
-          <RevealSection delay={200} className="text-center md:text-left">
-            <h3 className="font-heading text-3xl mb-4 text-primary">Accessibility</h3>
-            <p className="text-sm font-light leading-relaxed text-background/60">From sub-20 5K runners to those just starting their journey—Verve is built to be accessible and encouraging for all levels.</p>
-          </RevealSection>
-          <RevealSection delay={300} className="text-center md:text-left">
-            <h3 className="font-heading text-3xl mb-4 text-primary">Consistency</h3>
-            <p className="text-sm font-light leading-relaxed text-background/60">We value the streak over the speed. Showing up day after day is what builds a true athlete.</p>
-          </RevealSection>
+      {/* ── DESCRIPTION SECTION ── */}
+      <section className="px-8 md:px-16 pb-24 md:pb-32 max-w-[1400px] mx-auto mt-8 md:mt-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-8">
+          {/* Left - Large statement */}
+          <div className="md:col-span-7">
+            <h2 className="font-heading font-normal tracking-[-0.04em] leading-[0.95] text-[clamp(36px,5vw,72px)]">
+              A community of runners focused on consistency, progress, and local connection.
+            </h2>
+          </div>
+
+          {/* Right - Details */}
+          <div className="md:col-span-4 md:col-start-9 flex flex-col gap-10 pt-2">
+            <p className="text-[15px] font-medium leading-relaxed">
+              We run for the version of ourselves that will exist in 20 years. Every km is a deposit into your future health.
+            </p>
+            <p className="text-[15px] font-medium leading-relaxed">
+              From sub-20 5K runners to those just starting their journey—Verve is built to be accessible and encouraging for all levels.
+            </p>
+            <p className="text-[15px] font-medium leading-relaxed">
+              We value the streak over the speed. Showing up day after day is what builds a true athlete.
+            </p>
+          </div>
+        </div>
+
+        {/* CTA Row */}
+        <div className="flex flex-col sm:flex-row items-start gap-4 mt-16">
+          <Link
+            href="/join"
+            className="group inline-flex items-center gap-2 bg-foreground text-background text-[11px] font-bold tracking-[0.15em] uppercase px-8 py-4 hover:bg-foreground/80 transition-colors"
+            onMouseEnter={playHover}
+            onClick={playClick}
+          >
+            Join the Club <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
+          <Link
+            href="/about"
+            className="inline-flex items-center gap-2 bg-transparent text-foreground text-[11px] font-bold tracking-[0.15em] uppercase px-8 py-4 border border-foreground hover:bg-foreground hover:text-background transition-colors"
+            onMouseEnter={playHover}
+            onClick={playClick}
+          >
+            Our Story
+          </Link>
         </div>
       </section>
 
       {/* ── CLUB PILLARS ── */}
-      <section className="px-6 md:px-12 py-24 bg-off border-y border-foreground/5">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16">
-          <RevealSection delay={100}>
-            <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-8">
-              <Calendar className="h-6 w-6" />
+      <section className="border-t border-foreground/10 bg-foreground/5">
+        <div className="max-w-[1400px] mx-auto px-8 md:px-16 py-24 md:py-32">
+          <div className="text-[9px] tracking-[0.25em] uppercase font-bold text-[#E74431] mb-16">What We Offer</div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+            {/* Pillar 1 */}
+            <div>
+              <div className="w-12 h-12 border border-foreground/20 flex items-center justify-center text-[#E74431] mb-8">
+                <Calendar className="h-5 w-5" />
+              </div>
+              <h3 className="font-heading text-2xl font-medium tracking-tight mb-4">Weekly Schedule</h3>
+              <p className="text-[15px] leading-relaxed text-foreground/60">
+                Weekly group runs are held throughout the week, with Sunday sessions as a permanent fixture. Advanced high-intensity runs are available based on member interest.
+              </p>
             </div>
-            <h3 className="font-heading text-3xl mb-4">Weekly Schedule</h3>
-            <p className="text-foreground/60 font-light leading-relaxed">
-              Weekly group runs are held throughout the week, with Sunday sessions as a permanent fixture. Advanced high-intensity runs are available based on member interest.
-            </p>
-          </RevealSection>
 
-          <RevealSection delay={200}>
-            <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-8">
-              <MapPin className="h-6 w-6" />
+            {/* Pillar 2 */}
+            <div>
+              <div className="w-12 h-12 border border-foreground/20 flex items-center justify-center text-[#E74431] mb-8">
+                <MapPin className="h-5 w-5" />
+              </div>
+              <h3 className="font-heading text-2xl font-medium tracking-tight mb-4">City Hubs</h3>
+              <p className="text-[15px] leading-relaxed text-foreground/60">
+                We rotate our starting points between the city&apos;s best parks and urban trails to keep every run fresh.
+              </p>
             </div>
-            <h3 className="font-heading text-3xl mb-4">City Hubs</h3>
-            <p className="text-foreground/60 font-light leading-relaxed">
-              We rotate our starting points between the city&apos;s best parks and urban trails to keep every run fresh.
-            </p>
-          </RevealSection>
 
-          <RevealSection delay={300}>
-            <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-8">
-              <Users className="h-6 w-6" />
+            {/* Pillar 3 */}
+            <div>
+              <div className="w-12 h-12 border border-foreground/20 flex items-center justify-center text-[#E74431] mb-8">
+                <Users className="h-5 w-5" />
+              </div>
+              <h3 className="font-heading text-2xl font-medium tracking-tight mb-4">Community Focused</h3>
+              <p className="text-[15px] leading-relaxed text-foreground/60">
+                More than just running. Join us for post-run coffee, social events, and community-led workshops.
+              </p>
             </div>
-            <h3 className="font-heading text-3xl mb-4">Community Focused</h3>
-            <p className="text-foreground/60 font-light leading-relaxed">
-              More than just running. Join us for post-run coffee, social events, and community-led workshops.
-            </p>
-          </RevealSection>
+          </div>
         </div>
       </section>
 
-      {/* ── SOCIAL & ACTION ── */}
+      {/* ── WHATSAPP SECTION ── */}
       <WhatsAppSection />
+
+      {/* ── INSTAGRAM FEED ── */}
       <InstagramPreview />
 
       {/* ── FOOTER ── */}
-      <footer className="px-6 md:px-12 py-20 bg-background border-t border-foreground/5">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
-          <div className="space-y-6">
-            <div className="flex items-center gap-3">
-              <Logo3D className="w-8 h-8" />
-              <span className="font-heading text-2xl tracking-[2px]">VERVE</span>
+      <footer className="border-t border-foreground/10 bg-background">
+        <div className="max-w-[1400px] mx-auto px-8 md:px-16 py-20">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-12">
+            {/* Left */}
+            <div className="space-y-6">
+              <span className="font-heading text-2xl tracking-[2px] font-bold">VERVE</span>
+              <p className="text-sm text-foreground/40 max-w-xs">
+                Focused on building the most inclusive and consistent running community in the region.
+              </p>
             </div>
-            <p className="text-sm text-foreground/40 max-w-xs font-light">
-              Focused on building the most inclusive and consistent running community in the region.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-16">
-            <div className="space-y-4">
-              <div className="text-[10px] tracking-[2px] uppercase font-bold text-primary">Platform</div>
-              <div className="flex flex-col gap-2 text-sm text-foreground/60">
-                <a href="/leaderboard" className="hover:text-primary transition-colors">Board</a>
-                <a href="/challenges" className="hover:text-primary transition-colors">Challenges</a>
-                <a href="/gallery" className="hover:text-primary transition-colors">Gallery</a>
+
+            {/* Right links */}
+            <div className="grid grid-cols-2 gap-16">
+              <div className="space-y-4">
+                <div className="text-[9px] tracking-[0.2em] uppercase font-bold text-[#E74431]">Platform</div>
+                <div className="flex flex-col gap-2 text-sm text-foreground/60">
+                  <a href="/leaderboard" className="hover:text-[#E74431] transition-colors">Board</a>
+                  <a href="/challenges" className="hover:text-[#E74431] transition-colors">Challenges</a>
+                  <a href="/gallery" className="hover:text-[#E74431] transition-colors">Gallery</a>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="text-[9px] tracking-[0.2em] uppercase font-bold text-[#E74431]">Legal</div>
+                <div className="flex flex-col gap-2 text-sm text-foreground/60">
+                  <a href="/privacy" className="hover:text-[#E74431] transition-colors">Privacy</a>
+                  <a href="/terms" className="hover:text-[#E74431] transition-colors">Terms</a>
+                </div>
               </div>
             </div>
-            <div className="space-y-4">
-              <div className="text-[10px] tracking-[2px] uppercase font-bold text-primary">Legal</div>
-              <div className="flex flex-col gap-2 text-sm text-foreground/60">
-                <a href="/privacy" className="hover:text-primary transition-colors">Privacy</a>
-                <a href="/terms" className="hover:text-primary transition-colors">Terms</a>
-              </div>
-            </div>
           </div>
-        </div>
-        
-        <div className="max-w-7xl mx-auto mt-20 pt-10 border-t border-foreground/5 text-center text-[10px] tracking-[1px] text-foreground/30 uppercase">
-          © 2026 VERVE RUN CLUB. ALL RIGHTS RESERVED.
+
+          <div className="mt-20 pt-10 border-t border-foreground/10 text-center text-[10px] tracking-[1px] text-foreground/30 uppercase">
+            © 2026 VERVE RUN CLUB. ALL RIGHTS RESERVED.
+          </div>
         </div>
       </footer>
     </div>

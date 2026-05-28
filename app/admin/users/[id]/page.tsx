@@ -31,7 +31,7 @@ interface UserDetails {
 export default function AdminUserDetailsPage() {
   const router = useRouter()
   const params = useParams()
-  const id = params.id as string
+  const [id, setId] = useState<string | null>(null)
   const [user, setUser] = useState<UserDetails | null>(null)
   const [runs, setRuns] = useState<Run[]>([])
   const [loading, setLoading] = useState(true)
@@ -42,6 +42,15 @@ export default function AdminUserDetailsPage() {
   const [xpReason, setXpReason] = useState<string>('')
   const [role, setRole] = useState<string>('')
   const [isHidden, setIsHidden] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (!params || !params.id) return
+    if (typeof params.id === 'string') {
+      setId(params.id)
+    } else if (Array.isArray(params.id)) {
+      setId(params.id[0])
+    }
+  }, [params])
 
   useEffect(() => {
     if (!id) return

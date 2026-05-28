@@ -4,18 +4,17 @@ import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
-import { useAudio } from "@/hooks/use-audio"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap text-[13px] tracking-[1.5px] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 font-sans transition-all duration-150",
+  "inline-flex items-center justify-center whitespace-nowrap text-[13px] tracking-[2px] uppercase font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 font-sans transition-none brutal-hover",
   {
     variants: {
       variant: {
-        default: "bg-primary text-white font-medium hover:bg-primary-deep hover:-translate-y-0.5",
-        destructive: "bg-red-500 text-white hover:bg-red-500/90",
-        outline: "border border-border bg-transparent text-foreground hover:border-primary hover:text-primary hover:-translate-y-0.5",
-        ghost: "hover:bg-off text-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+        default: "bg-[#000000] text-[#F3EDE3] border-[4px] border-[#000000] hover:bg-[#F3EDE3] hover:text-[#000000]",
+        destructive: "bg-[#EF3322] text-[#000000] border-[4px] border-[#000000] hover:bg-[#000000] hover:text-[#EF3322]",
+        outline: "bg-transparent text-[#000000] border-[4px] border-[#000000] hover:bg-[#000000] hover:text-[#F3EDE3]",
+        ghost: "bg-transparent text-[#000000] hover:bg-[#000000] hover:text-[#F3EDE3]",
+        link: "text-[#000000] underline-offset-4 hover:underline",
       },
       size: {
         default: "px-8 py-3.5",
@@ -38,22 +37,13 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, onMouseEnter, onClick, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
-    const { playHover, playClick } = useAudio()
     
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
-        onMouseEnter={(e) => {
-          playHover()
-          onMouseEnter?.(e as any)
-        }}
-        onClick={(e) => {
-          playClick()
-          onClick?.(e as any)
-        }}
         {...props}
       />
     )
