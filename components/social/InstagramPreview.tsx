@@ -6,29 +6,19 @@ import { useEffect } from 'react'
 
 // REPLACE THESE URLs with the actual post URLs from @verve.runclub
 const INSTAGRAM_POSTS = [
-  'https://www.instagram.com/reel/DWlIvoTEUIU/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==', // Example placeholder
-  'https://www.instagram.com/p/DWVxJ1tEcuc/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==', // Example placeholder
-  'https://www.instagram.com/p/DWBA6kDEXbB/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==', // Example placeholder
-  'https://www.instagram.com/reel/DWLeQajEX97/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==', // Example placeholder
-  'https://www.instagram.com/p/DWI7p4TEWQX/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==', // Example placeholder
-  'https://www.instagram.com/p/DVTMtZkk3YO/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==', // Example placeholder
+  'https://www.instagram.com/reel/DWlIvoTEUIU/embed',
+  'https://www.instagram.com/p/DWVxJ1tEcuc/embed',
+  'https://www.instagram.com/p/DWBA6kDEXbB/embed',
+  'https://www.instagram.com/reel/DWLeQajEX97/embed',
+  'https://www.instagram.com/p/DWI7p4TEWQX/embed',
+  'https://www.instagram.com/p/DVTMtZkk3YO/embed',
 ]
 
 export function InstagramPreview() {
   const instaUrl = "https://www.instagram.com/verve.runclub/"
 
   useEffect(() => {
-    // Dynamically load the Instagram embed script on mount
-    const script = document.createElement('script')
-    script.src = "//www.instagram.com/embed.js"
-    script.async = true
-    document.body.appendChild(script)
-
-    return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script)
-      }
-    }
+    // No script needed for iframes
   }, [])
 
   return (
@@ -55,12 +45,14 @@ export function InstagramPreview() {
         {INSTAGRAM_POSTS.map((url, i) => (
           <RevealSection key={i} delay={i * 100}>
             <div className="w-full flex justify-center bg-white rounded-md overflow-hidden border border-foreground/5 shadow-sm">
-              <blockquote 
-                className="instagram-media w-full" 
-                data-instgrm-permalink={url} 
-                data-instgrm-version="14"
-                style={{ background: '#FFF', border: 0, margin: 0, padding: 0, width: '100%' }}
-              ></blockquote>
+              <iframe 
+                src={url}
+                className="w-full h-[500px]"
+                frameBorder="0"
+                scrolling="no"
+                allowTransparency={true}
+                allow="encrypted-media"
+              ></iframe>
             </div>
           </RevealSection>
         ))}

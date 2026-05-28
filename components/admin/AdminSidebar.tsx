@@ -6,12 +6,11 @@ import { Activity, Users, ShieldAlert, Database, BarChart, Settings } from 'luci
 import { cn } from '@/lib/utils'
 
 const navItems = [
-  { name: 'System Dashboard', href: '/admin', icon: Activity },
-  { name: 'User Management', href: '/admin/users', icon: Users },
-  { name: 'Challenges', href: '/admin/challenges', icon: ShieldAlert, disabled: true },
-  { name: 'Analytics', href: '/admin/analytics', icon: BarChart, disabled: true },
-  { name: 'Audit Logs', href: '/admin/audit', icon: Database, disabled: true },
-  { name: 'Settings', href: '/admin/settings', icon: Settings, disabled: true },
+  { name: 'System Dashboard', href: '/admin', icon: Activity, disabled: false },
+  { name: 'User Management', href: '/admin/users', icon: Users, disabled: false },
+  { name: 'Challenges', href: '/admin/challenges', icon: ShieldAlert, disabled: false },
+  { name: 'Analytics', href: '/admin/analytics', icon: BarChart, disabled: false },
+  { name: 'Audit Logs', href: '/admin/audit', icon: Database, disabled: false },
 ]
 
 export function AdminSidebar() {

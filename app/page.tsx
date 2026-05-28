@@ -178,8 +178,14 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="mt-20 pt-10 border-t border-foreground/10 text-center text-[10px] tracking-[1px] text-foreground/30 uppercase">
-            © 2026 VERVE RUN CLUB. ALL RIGHTS RESERVED.
+          <div className="mt-20 pt-10 border-t border-foreground/10 text-center flex flex-col items-center gap-6">
+            <div className="flex items-center gap-2 text-foreground/40 text-xs font-medium">
+              Powered by 
+              <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5 text-[#FC4C02]"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg>
+            </div>
+            <div className="text-[10px] tracking-[1px] text-foreground/30 uppercase">
+              © 2026 VERVE RUN CLUB. ALL RIGHTS RESERVED.
+            </div>
           </div>
         </div>
       </footer>
